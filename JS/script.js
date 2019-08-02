@@ -1,5 +1,3 @@
-//call init to initial game, create 52 numbers for 52 cards
-
 
 /*------------variables-----------*/
 let playerCards = [];    //an array for player's current cards

@@ -5,9 +5,51 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Black Jack Game</title>
-    <script defer src="JS/script.js"></script>
+    <link rel="stylesheet" href="css/main.css">
+    <script defer src = "js/testing.js"></script>
 </head>
 <body>
-    
+    <div id ="start-page">
+        <button id= "start-button">START</button>
+    </div>
+
+    <div id = "game-page" class = "disappear-page">
+        <div id = "play-zone">
+            <section id = "dealer-cards"></section>
+                
+            <section id = "game-controller"></section>
+            <section id = "player-cards"></section>
+            <section id = "bet-controller"></section>
+        </div>
+        <div id = "buttons-zone">
+
+        </div>
+        <div id = "message-zone">
+            <section class = "message-cell">
+                <img src="image/remainingCards.png" alt="number of remaining cards" id = "remaining-cards-pic">
+                <span id = "total-cards"></span>
+            </section>
+            <section class = "message-cell">
+                <span class = "name">Dealer</span>
+                <span id = "dealer-total-number">21</span>
+            </section>
+            <section class = "message-cell">
+                <span class = "money-number">Bet $ </span>
+                <span id = "bet-number">100</span>
+            </section>
+            <section class = "message-cell">
+                <span class = "name">Player</span>
+                <span id = "player-total-number">21</span>
+            </section>
+            <section class = "message-cell">
+                <span class = "money-number">Bank $ </span>
+                <span id = "bank-number">100</span>
+            </section>
+        </div>
+    </div>
+
+    <!-- <div id = "end-page">
+
+    </div> -->
 </body>
 </html>
