@@ -17,7 +17,7 @@ button {
     transition-duration: 0.4s;
     border-radius: 12px;
 }
-.disappear-page {
+.disappear-class {
     display: none !important;
 }
 
@@ -25,7 +25,7 @@ button {
 
 
 
-/* start page */
+/* start page -------------------------------*/
 #start-page {
     min-height: 100vh;
     display: flex;
@@ -49,64 +49,68 @@ button {
   box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24),0 17px 50px 0 rgba(0,0,0,0.19);
 }
 
-/* game page div */
-#game-page {
+/* main ---------------------------------------*/
+main {
     min-height: 100vh;
     background-image: linear-gradient(25deg, #083237, #195440, #237947, #2ba04d);
     display: grid;
-    grid-template-columns: auto 20% 10%;
+    grid-template-columns: 80% 20%;
     grid-template-rows: auto;
 }
-/* play zone */
+/* ---------------play zone------------------- */
 #play-zone {
     display: grid;
     grid-template-columns: auto;
-    grid-template-rows: 35% 15% 35% 15%;
-}
-#dealer-cards {
-    background-color: blue;
-}
-#game-controller {
-    background-color: transparent;
-}
-#player-cards {
-    background-color: blue;
-}
-#bet-controller {
-    background-color: transparent;
-}
-/* buttons-zone */
-#buttons-zone {
-    background-color: lightskyblue;
-    display: grid;
-    grid-template-columns: 50%v 50%;
-    grid-template-rows: 238.55px 128.45px;
-}
-/* message-zone */
-#message-zone {
-    background-color: transparent;
-    display: grid;
-    grid-template-columns: auto;
-    grid-template-rows: auto auto auto auto auto;
+    grid-template-rows: 30% 40% 30%;
     justify-content: center;
     align-items: center;
-    text-emphasis: center;
-    font-size: 30px;
 }
-.message-cell {
+/* --------------------------------middle cell */
+#middle-cell {
+    border: solid 5px grey;
+}
+/* bet-buttons */
+#bet-buttons {
+    display: grid;
+    grid-template-columns: auto auto auto auto;
+    grid-template-rows: auto;
+}
+#bet-buttons > img {
+    width: 150px;
+}
+/* play buttons */
+#play-buttons {
+    background-color: blue;
+}
+#result-display {
+    background-color: red;
+}
+/* result display */
+
+/* ---------------msg zone-------------------- */
+#msg-zone {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    border-left: solid rgb(180, 177, 177) 5px;
+}
+#msg-zone > div * {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    font-size: 24px;
     color: white;
-} 
-#player-total-number, #dealer-total-number {
-    border: white 1px solid;
-    font-size: 40px;
-    padding: 5px;
 }
-#remaining-cards-pic {
+#dealer-total > span, #player-total > span {
+    border: solid 5px grey;
+}
+
+#remaining-cards > img {
     width: 50px;
 }
+
+
 
 

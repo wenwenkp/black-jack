@@ -6,47 +6,73 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Black Jack Game</title>
     <link rel="stylesheet" href="css/main.css">
-    <script defer src = "js/testing.js"></script>
+    <script defer src = "js/main.js"></script>
 </head>
 <body>
     <div id ="start-page">
         <button id= "start-button">START</button>
     </div>
 
-    <div id = "game-page" class = "disappear-page">
-        <div id = "play-zone">
-            <section id = "dealer-cards"></section>
-                
-            <section id = "game-controller"></section>
-            <section id = "player-cards"></section>
-            <section id = "bet-controller"></section>
-        </div>
-        <div id = "buttons-zone">
+    <main class="disappear-class">
 
-        </div>
-        <div id = "message-zone">
-            <section class = "message-cell">
-                <img src="image/remainingCards.png" alt="number of remaining cards" id = "remaining-cards-pic">
-                <span id = "total-cards"></span>
-            </section>
-            <section class = "message-cell">
-                <span class = "name">Dealer</span>
-                <span id = "dealer-total-number">21</span>
-            </section>
-            <section class = "message-cell">
-                <span class = "money-number">Bet $ </span>
-                <span id = "bet-number">100</span>
-            </section>
-            <section class = "message-cell">
-                <span class = "name">Player</span>
-                <span id = "player-total-number">21</span>
-            </section>
-            <section class = "message-cell">
-                <span class = "money-number">Bank $ </span>
-                <span id = "bank-number">100</span>
-            </section>
-        </div>
-    </div>
+        <section id="play-zone">
+
+            <div id="dealer-cell"></div>
+
+            <div id="middle-cell">
+
+                <div id="bet-buttons">
+                    <img src="image/dollar1.png" alt="1 dollar" id="one">
+                    <img src="image/dollar50.png" alt="50 dollars" id="two">
+                    <img src="image/dollar100.png" alt="100 dollars" id="three">
+                    <img src="image/dollar500.png" alt="500 dollars" id="four">
+                </div>
+
+                <div id="play-buttons" class="disappear-class">
+                    <div id="start-over" class="disappear-class">
+                        <button>Start Over</button>
+                        <button>Next Round</button>
+                    </div>
+                    <div id="playing" class="disappear-class">
+                        <button>Hit</button>
+                        <button>Double</button>
+                        <button>Stand</button>
+                    </div>
+                </div>
+                <div id="result-display" class="disappear-class">
+                    <h1 class="disappear-class">Player Wins!</h1>
+                    <h1 class="disappear-class">DealerWins!</h1>
+                </div>
+            </div>
+
+            <div id="player-cell"></div>
+
+        </section>
+
+        <section id="msg-zone">
+            <div id="remaining-cards">
+                <img src="image/remainingCards.png" alt="number of remaining cards">
+                <span>104</span>
+            </div>
+            <div id="dealer-total">
+                <h2>Dealer</h2>
+                <span>8</span>
+            </div>
+            <div id="bet-amount">
+                <h2>Bet $</h2>
+                <span></span>
+            </div>
+            <div id="player-total">
+                <h2>Player</h2>
+                <span>21</span>
+            </div>
+            <div id="bank-amount">
+                <h2>Bank $</h2>
+                <span></span>
+            </div>
+        </section>
+
+    </main>
 
     <!-- <div id = "end-page">
 
