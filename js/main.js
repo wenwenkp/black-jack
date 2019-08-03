@@ -23,9 +23,9 @@ const playBtn = document.getElementById('play-buttons');
 const hitBtn = document.querySelector('#play-buttons button:first-child');
 const doubleBtn = document.querySelector('#play-buttons button:nth-child(2)');
 const standBtn = document.querySelector('#play-buttons button:last-child');
-const result = document.getElementById('result');
 const lastPage = document.getElementById('last-page');
-const startOverBtn = document.querySelector('#last-page button:first-child');
+const result = document.querySelector('h1');
+const startOverBtn = document.querySelector('#last-page button:nth-child(2)');
 const nextBtn = document.querySelector('#last-page button:last-child');
 
 
@@ -254,9 +254,9 @@ function dealerTurn() {
         console.log(`dealerturn end`);
 
         showEl(result);
+        sleep(2000);
+        // hideEl(result);
         sleep(800);
-        hideEl(result);
-
         showEl(lastPage);
 }
 //next round
