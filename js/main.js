@@ -27,10 +27,12 @@ const player = {    //player
     bankNum : document.querySelector('#bank-amount span'),
     playerNum : document.querySelector('#player-total span'),
     betNum : document.querySelector('#bet-amount span'),
+    sign : `player`
 }
 const dealer = {    //dealer
     cards : [],
     dealerNum : document.querySelector('#dealer-total span'),
+    sign : `dealer`
 }
 let bust = false;
 var cards;
@@ -269,6 +271,8 @@ function nextRound() {
     hideEl(lastPage);
     showEl(betBtn);
     bust = false;
+    removeCards(player.sign);
+    removeCards(dealer.sign);
 }
 //start over
 function startOver() {
@@ -278,6 +282,8 @@ function startOver() {
     init();
     hideEl(lastPage);
     showEl(betBtn);
+    removeCards(player.sign);
+    removeCards(dealer.sign);
 }
 // get card pic
 function assignPlayerCard() {
@@ -315,6 +321,17 @@ function assignDealerCard() {
     document.querySelector('#dealer-cell img:last-child').setAttribute(`src`, imgUrl);
     if(cardNum === `back`){
         document.querySelector('#dealer-cell img:last-child').setAttribute(`class`, 'show-back');
+    }
+}
+function removeCards(target) {
+    let element;
+    if(target === `player`) {
+        element = document.querySelector('#player-cell');
+    }else{
+        element = document.querySelector('#dealer-cell');
+    };
+    while(element.firstChild){
+        element.removeChild(element.firstChild);
     }
 }
 
