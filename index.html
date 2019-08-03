@@ -27,23 +27,18 @@
                     <img src="image/dollar100.png" alt="100 dollars" id="three">
                     <img src="image/dollar500.png" alt="500 dollars" id="four">
                 </div>
-
                 <div id="play-buttons" class="disappear-class">
-                    <div id="start-over" class="disappear-class">
-                        <button>Start Over</button>
-                        <button>Next Round</button>
-                    </div>
-                    <div id="playing" class="disappear-class">
-                        <button>Hit</button>
-                        <button>Double</button>
-                        <button>Stand</button>
-                    </div>
+                    <button>Hit</button>
+                    <button>Double</button>
+                    <button>Stand</button>
                 </div>
-                <div id="result-display" class="disappear-class">
-                    <h1 class="disappear-class">Player Wins!</h1>
-                    <h1 class="disappear-class">DealerWins!</h1>
+                <h1 id="result" class="disappear-class"></h1>
+                <div id="last-page" class="disappear-class">
+                    <button>Start Over</button>
+                    <button>Next Round</button>
                 </div>
             </div>
+
 
             <div id="player-cell"></div>
 
@@ -52,11 +47,11 @@
         <section id="msg-zone">
             <div id="remaining-cards">
                 <img src="image/remainingCards.png" alt="number of remaining cards">
-                <span>104</span>
+                <span></span>
             </div>
             <div id="dealer-total">
                 <h2>Dealer</h2>
-                <span>8</span>
+                <span></span>
             </div>
             <div id="bet-amount">
                 <h2>Bet $</h2>
@@ -64,7 +59,7 @@
             </div>
             <div id="player-total">
                 <h2>Player</h2>
-                <span>21</span>
+                <span></span>
             </div>
             <div id="bank-amount">
                 <h2>Bank $</h2>
