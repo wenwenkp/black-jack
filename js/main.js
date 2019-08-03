@@ -8,22 +8,10 @@ const msgZone = {       //each cell in msg zone
 };
 
 const chips = {     //represent each chip
-    one : {
-        val : 1,
-        position : document.getElementById('one'),
-    },
-    two : {
-        val : 50,
-        position : document.getElementById('fifty'),
-    },
-    three : {
-        val : 100,
-        position : document.getElementById('one-hundred'),
-    },
-    four : {
-        val : 500,
-        position : document.getElementById('five-hundred'),
-    }
+    one : 1,
+    two : 50,
+    three : 100,
+    four : 500
 };
 
 
@@ -73,7 +61,7 @@ startBtn.addEventListener('click', function() {
 //click to lay bet, update msg zone for amount and bank
 betBtn.addEventListener('click', function(evt) {
     let chip = evt.target.id;
-    amount = chips[chip].val;
+    amount = chips[chip];
     player.bank = player.bank - amount;
     msgZone.betNum.textContent = amount + parseInt(msgZone.betNum.textContent);
     msgZone.bankNum.textContent = player.bank;
