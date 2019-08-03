@@ -1,12 +1,4 @@
 /* -----------------constants----------------------*/
-const msgZone = {       //each cell in msg zone
-    remainingNum : document.querySelector('#remaining-cards span'),
-    dealerNum : document.querySelector('#dealer-total span'),
-    betNum : document.querySelector('#bet-amount span'),
-    playerNum : document.querySelector('#player-total span'),
-    bankNum : document.querySelector('#bank-amount span'),
-};
-
 const chips = {     //represent each chip
     one : 1,
     two : 50,
@@ -14,7 +6,7 @@ const chips = {     //represent each chip
     four : 500
 };
 
-
+const remainingNum = document.querySelector('#remaining-cards span');
 const startPage = document.getElementById('start-page');
 const startBtn = document.getElementById("start-button");
 const mainPage = document.querySelector('main');
@@ -28,18 +20,17 @@ const result = document.querySelector('h1');
 const startOverBtn = document.querySelector('#last-page button:nth-child(2)');
 const nextBtn = document.querySelector('#last-page button:last-child');
 
-
 /*---------------------------variables----------------*/
 const player = {    //player
     cards : [],
-    points : 0,
     bank : null,
-    blackJack : false,
+    bankNum : document.querySelector('#bank-amount span'),
+    playerNum : document.querySelector('#player-total span'),
+    betNum : document.querySelector('#bet-amount span'),
 }
 const dealer = {    //dealer
     cards : [],
-    points : 0,
-    blackJack : false,
+    dealerNum : document.querySelector('#dealer-total span'),
 }
 let bust = false;
 var cards;
@@ -63,8 +54,8 @@ betBtn.addEventListener('click', function(evt) {
     let chip = evt.target.id;
     amount = chips[chip];
     player.bank = player.bank - amount;
-    msgZone.betNum.textContent = amount + parseInt(msgZone.betNum.textContent);
-    msgZone.bankNum.textContent = player.bank;
+    player.betNum.textContent = amount + parseInt(player.betNum.textContent);
+    player.bankNum.textContent = player.bank;
     console.log(`player lay amount ${amount}.`);
 
     sleep(800);
@@ -72,7 +63,7 @@ betBtn.addEventListener('click', function(evt) {
     showEl(playBtn);
     getCard(player.cards);
     getCard(player.cards);
-    msgZone.playerNum.textContent = calculateTotal(player.cards);
+    player.playerNum.textContent = calculateTotal(player.cards);
     console.log(`player's cards: ${player.cards}`);
     getCard(dealer.cards);
     getCard(dealer.cards);
@@ -81,16 +72,16 @@ betBtn.addEventListener('click', function(evt) {
 //click to hit --- player turn
 hitBtn.addEventListener('click', function() {
     getCard(player.cards);
-    msgZone.playerNum.textContent = calculateTotal(player.cards);
+    player.playerNum.textContent = calculateTotal(player.cards);
     console.log(player.cards);
     checkBust(player.cards);
 });
 //click to double
 doubleBtn.addEventListener('click', function() {
     player.bank = player.bank - amount;
-    msgZone.bankNum.textContent = player.bank;
+    player.bankNum.textContent = player.bank;
     amount = amount * 2;
-    msgZone.betNum.textContent = amount;
+    player.betNum.textContent = amount;
     console.log(`current bank is ${player.bank} and amount is ${amount}`);
 
     sleep(800);
@@ -103,8 +94,6 @@ nextBtn.addEventListener('click', nextRound);
 
 //click to start over
 startOverBtn.addEventListener('click', startOver);
-
-
 
 /*--------------------------functions-------------------*/
 init();
@@ -122,10 +111,12 @@ function init() {
         1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 10, 10
     ];
     shuffleCards();
-    msgZone.remainingNum.textContent = cards.length;
+    remainingNum.textContent = cards.length;
     console.log(`current cards: ${cards}`);
-    msgZone.bankNum.textContent = player.bank;
-    msgZone.betNum.textContent = amount;
+    player.bankNum.textContent = player.bank;
+    player.betNum.textContent = amount;
+    dealer.dealerNum.textContent = 0;
+    player.playerNum.textContent = 0;
     console.log(`current amount ${amount} and bank ${player.bank}`);
     console.log(`done init--------------------------------`);
     bust = false;
@@ -161,7 +152,7 @@ function getRandomIndex() {
 function getCard(array) {
     let temp = cards.splice(getRandomIndex(), 1);
     array[array.length] = temp.pop();
-    msgZone.remainingNum.textContent = cards.length;
+    remainingNum.textContent = cards.length;
 }
 //check bust
 function checkBust(array) {
@@ -190,12 +181,12 @@ function compareBoth() {
     console.log('dealer total: '+ dealerSum);
 
     sleep(800);
-    msgZone.dealerNum.textContent = parseInt(dealerSum);
+    dealer.dealerNum.textContent = parseInt(dealerSum);
 
     if(playerSum > 21){  //dealer win
         console.log(`Dealer Win.`);
         amount = 0;
-        msgZone.betNum.textContent = amount;
+        player.betNum.textContent = amount;
         console.log('bank is: '+ player.bank + ', amount is :' + amount);
         //show ending
         result.textContent = `Dealer Win`;
@@ -204,8 +195,8 @@ function compareBoth() {
         amount = amount * 2;
         player.bank = player.bank + amount;
         amount = 0;
-        msgZone.betNum.textContent = amount;
-        msgZone.bankNum.textContent = player.bank;
+        player.betNum.textContent = amount;
+        player.bankNum.textContent = player.bank;
         console.log('bank is: '+player.bank + ', amount is :' + amount);
         //show ending
         result.textContent = `Player Win`;
@@ -215,15 +206,15 @@ function compareBoth() {
             amount = amount * 2;
             player.bank = player.bank + amount;
             amount = 0;
-            msgZone.betNum.textContent = amount;
-            msgZone.bankNum.textContent = player.bank;
+            player.betNum.textContent = amount;
+            player.bankNum.textContent = player.bank;
             console.log('bank is: '+player.bank + ', amount is :' + amount);
             //show ending
             result.textContent = `Player Win`;
         }else if(playerSum < dealerSum) {   //dealer win
             console.log(`Dealer Win.`);
             amount = 0;
-            msgZone.betNum.textContent = amount;
+            player.betNum.textContent = amount;
             console.log('bank is: '+player.bank + ', amount is :' + amount);
             //show ending
             result.textContent = `Dealer Win`;
@@ -232,8 +223,8 @@ function compareBoth() {
             console.log(`Tie.`);
             player.bank = player.bank + amount;
             amount = 0;
-            msgZone.betNum.textContent = amount;
-            msgZone.bankNum.textContent = player.bank;
+            player.betNum.textContent = amount;
+            player.bankNum.textContent = player.bank;
             console.log('bank is: '+player.bank + ', amount is :' + amount);
             //show ending
             result.textContent = `Tie!!`;
@@ -253,17 +244,16 @@ function dealerTurn() {
         compareBoth();
         console.log(`dealerturn end`);
 
-        showEl(result);
-        sleep(2000);
-        // hideEl(result);
-        sleep(800);
         showEl(lastPage);
+        sleep(800);
 }
 //next round
 function nextRound() {
     sleep(300);
     player.cards = [];
     dealer.cards = [];
+    dealer.dealerNum.textContent = 0;
+    player.playerNum.textContent = 0;
     hideEl(lastPage);
     showEl(betBtn);
     bust = false;
