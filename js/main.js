@@ -37,20 +37,29 @@ var cards;
 let shuffleTimes = 100;
 let amount = 0; // represent amount of the bet
 
-
 /*------------------event listeners---------------------*/
-//click start button for next page to start game
-startBtn.addEventListener('click', function() {
-    //disappear start page
-    //display game page 
-    startPage.style.transition = '0.8s';
-    startBtn.style.opacity = 0;
-    setTimeout(hideEl(startPage), 800);
-    setTimeout(showEl(mainPage), 800);
-    console.log(`done startbutton------------------`);
+startBtn.addEventListener('click', function(){
+    fadeOut(startBtn);
+    sleep(2000);
+    fadeOut(startPage);
+    fadeIn(mainPage);
+    hideEl(startPage);
 });
+//click start button for next page to start game
+// startBtn.addEventListener('click', function() {
+//     startBtn.style.opacity = 1;
+//     startPage.style.transition = 1;
+
+//     startBtn.style.opacity = 1;
+
+//     hideEl(startPage);
+//     sleep(300);
+//     showEl(mainPage);
+//     console.log(`done startbutton------------------`);
+// });
 //click to lay bet, update msg zone for amount and bank
 betBtn.addEventListener('click', function(evt) {
+
     let chip = evt.target.id;
     amount = chips[chip];
     player.bank = player.bank - amount;
@@ -58,20 +67,22 @@ betBtn.addEventListener('click', function(evt) {
     player.bankNum.textContent = player.bank;
     console.log(`player lay amount ${amount}.`);
 
-    sleep(800);
+    sleep(1000);
     hideEl(betBtn);
+    sleep(1000);
     showEl(playBtn);
-    getCard(player.cards);
-    getCard(player.cards);
+    assignPlayerCard();
+    assignPlayerCard();
     player.playerNum.textContent = calculateTotal(player.cards);
     console.log(`player's cards: ${player.cards}`);
-    getCard(dealer.cards);
-    getCard(dealer.cards);
+    assignDealerCard();
+    assignDealerCard();
+    console.log(`dealer's cards: ${dealer.cards}`);
     console.log(`done bet button----------------------`);
 });
 //click to hit --- player turn
 hitBtn.addEventListener('click', function() {
-    getCard(player.cards);
+    assignPlayerCard();
     player.playerNum.textContent = calculateTotal(player.cards);
     console.log(player.cards);
     checkBust(player.cards);
@@ -149,11 +160,11 @@ function getRandomIndex() {
     return Math.floor(Math.random() * (cards.length - 1));
 }
 //assign cards
-function getCard(array) {
-    let temp = cards.splice(getRandomIndex(), 1);
-    array[array.length] = temp.pop();
-    remainingNum.textContent = cards.length;
-}
+// function assignPlayerCard(array) {
+//     let temp = cards.splice(getRandomIndex(), 1);
+//     array[array.length] = temp.pop();
+//     remainingNum.textContent = cards.length;
+// }
 //check bust
 function checkBust(array) {
     console.log(`checking bust...`);
@@ -237,15 +248,16 @@ function dealerTurn() {
     hideEl(playBtn);
     if(bust === false){
         while(calculateTotal(dealer.cards) < 15) {
-            getCard(dealer.cards);
+            assignDealerCard();
             checkBust(dealer.cards);
         }
     }
-        compareBoth();
-        console.log(`dealerturn end`);
 
-        showEl(lastPage);
-        sleep(800);
+    compareBoth();
+    console.log(`dealerturn end`);
+
+    showEl(lastPage);
+    sleep(800);
 }
 //next round
 function nextRound() {
@@ -267,6 +279,45 @@ function startOver() {
     hideEl(lastPage);
     showEl(betBtn);
 }
+// get card pic
+function assignPlayerCard() {
+    let array = player.cards;
+    let temp = cards.splice(getRandomIndex(), 1);
+    array[array.length] = temp.pop();
+    remainingNum.textContent = cards.length;
+    let cardNum= array[array.length - 1];
+    let imgUrl;
+    if(cardNum === 10){
+        cardNum = Math.floor(Math.random() * 4) + 10;
+    }
+    imgUrl = `image/${cardNum}.jpg`;
+    let newImg = document.createElement('img');
+    document.querySelector('#player-cell').appendChild(newImg);
+    document.querySelector('#player-cell img:last-child').setAttribute(`src`, imgUrl);
+}
+function assignDealerCard() {
+    let array = dealer.cards;
+    let temp = cards.splice(getRandomIndex(), 1);
+    array[array.length] = temp.pop();
+    remainingNum.textContent = cards.length;
+
+    let imgUrl;
+    let cardNum = array[array.length - 1];
+    if(array.length === 1){
+        cardNum = `back`;
+    }
+    if(cardNum === 10){
+        cardNum = Math.floor(Math.random() * 4) + 10;
+    }
+    imgUrl = `image/${cardNum}.jpg`;
+    let newImg = document.createElement('img');
+    document.querySelector('#dealer-cell').appendChild(newImg);
+    document.querySelector('#dealer-cell img:last-child').setAttribute(`src`, imgUrl);
+    if(cardNum === `back`){
+        document.querySelector('#dealer-cell img:last-child').setAttribute(`class`, 'show-back');
+    }
+}
+
 
 //to delay next move
 function sleep(numberMillis){
@@ -278,3 +329,12 @@ function sleep(numberMillis){
   }
 }
 
+function fadeIn(el){
+    el.classList.add('fade-in');
+    el.classList.remove('fade-out');  
+}
+  
+function fadeOut(el){
+    el.classList.add('fade-out');
+    el.classList.remove('fade-in');
+}
