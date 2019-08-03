@@ -87,9 +87,6 @@ main {
 }
 
 /* --------------------------------middle cell */
-#middle-cell {
-    border: solid 5px grey;
-}
 /* bet-buttons */
 #bet-buttons {
     display: grid;
@@ -99,6 +96,7 @@ main {
 }
 #bet-buttons > img {
     width: 150px;
+    cursor: pointer; 
 }
 /* play buttons */
 #play-buttons {
@@ -136,7 +134,6 @@ h1 {
     flex-direction: column;
     justify-content: space-around;
     align-items: center;
-    border-left: solid rgb(180, 177, 177) 5px;
 }
 #msg-zone > div * {
     display: flex;
