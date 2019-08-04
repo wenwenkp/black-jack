@@ -6,7 +6,6 @@ const chips = {     //represent each chip
     four : 500
 };
 
-const remainingCards = document.querySelector('#remaining-cards span');
 const startPage = document.getElementById('start-page');
 const startBtn = document.getElementById("start-button");
 const mainPage = document.querySelector('main');
@@ -31,10 +30,11 @@ const dealer = {    //dealer
     represent : `dealer`
 }
 const msgZone = {
-    bankNum : document.querySelector('#bank-amount span'),
-    playerNum : document.querySelector('#player-total span'),
+    remainingCards : document.querySelector('#remaining-cards span'),
     dealerNum : document.querySelector('#dealer-total span'),
     betNum : document.querySelector('#bet-amount span'),
+    playerNum : document.querySelector('#player-total span'),
+    bankNum : document.querySelector('#bank-amount span'),
 }
 let bust;
 let cards;
@@ -56,7 +56,6 @@ betBtn.addEventListener('click', function(evt) {
     player.bank = player.bank - amount;
     // msgZone.betNum.textContent = amount + parseInt(msgZone.betNum.textContent);
     // msgZone.bankNum.textContent = player.bank;
-    render();
     hideEl(betBtn);
     showEl(playBtn);
     assignCard(player.represent);
@@ -64,6 +63,8 @@ betBtn.addEventListener('click', function(evt) {
     // msgZone.playerNum.textContent = calculateTotal(player.cards);
     assignCard(dealer.represent);
     assignCard(dealer.represent);
+    render();
+
     console.log(dealer.cards);
 });
 //click to hit --- player turn
@@ -74,8 +75,8 @@ hitBtn.addEventListener('click', function() {
 });
 //click to double
 doubleBtn.addEventListener('click', function() {
-    amount = parseInt(msgZone.betNum.textContent);
-    player.bank = player.bank - amount;
+    amount = parseInt(msgZone.betNum.textContent) * 2;
+    player.bank = player.bank - parseInt(msgZone.betNum.textContent);
     render();
 });
 //click to stand -- dealer turn
@@ -99,7 +100,7 @@ function prepareCards() {
         1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 10, 10
     ];
     shuffleCards();
-    remainingCards.textContent = cards.length;
+    msgZone.remainingCards.textContent = cards.length;
 }
 // initial the game
 function init() {
@@ -115,10 +116,10 @@ function init() {
 }
 //render
 function render() {
-    msgZone.betNum.textContent = amount + parseInt(msgZone.betNum.textContent);
-    amount = 0;
+    msgZone.betNum.textContent = amount;
     msgZone.bankNum.textContent = player.bank;
     msgZone.playerNum.textContent = calculateTotal(player.cards);
+    msgZone.remainingCards.textContent = cards.length;
 }
 // hide and show elements
 function hideEl(element){
@@ -168,53 +169,107 @@ function compareBoth() {
     sleep(800);
     msgZone.dealerNum.textContent = parseInt(dealerSum);
 
-    if(playerSum > 21){  //dealer win
-        console.log(`Dealer Win.`);
-        amount = 0;
-        player.betNum.textContent = amount;
-        console.log('bank is: '+ player.bank + ', amount is :' + amount);
-        //show ending
-        result.textContent = `Dealer Win`;
-    }else if(dealerSum > 21){   //player win
-        console.log(`Player Win.`);
-        amount = amount * 2;
-        player.bank = player.bank + amount;
-        amount = 0;
-        msgZone.betNum.textContent = amount;
-        msgZone.bankNum.textContent = player.bank;
-        console.log('bank is: '+player.bank + ', amount is :' + amount);
-        //show ending
-        result.textContent = `Player Win`;
-    }else{
+    // if(playerSum > 21){  //dealer win
+    //     // console.log(`Dealer Win.`);
+    //     amount = 0;
+    //     player.betNum.textContent = amount;
+    //     // console.log('bank is: '+ player.bank + ', amount is :' + amount);
+    //     //show ending
+    //     result.textContent = `Dealer Win`;
+    // }else if(dealerSum > 21){   //player win
+    //     // console.log(`Player Win.`);
+    //     amount = amount * 2;
+    //     player.bank = player.bank + amount;
+    //     amount = 0;
+    //     msgZone.betNum.textContent = amount;
+    //     msgZone.bankNum.textContent = player.bank;
+    //     // console.log('bank is: '+player.bank + ', amount is :' + amount);
+    //     //show ending
+    //     result.textContent = `Player Win`;
+    // }else{
         if(playerSum > dealerSum) { //player win
-            console.log(`Player Win.`);
-            amount = amount * 2;
-            player.bank = player.bank + amount;
-            amount = 0;
-            player.betNum.textContent = amount;
-            player.bankNum.textContent = player.bank;
-            console.log('bank is: '+player.bank + ', amount is :' + amount);
-            //show ending
-            result.textContent = `Player Win`;
-        }else if(playerSum < dealerSum) {   //dealer win
-            console.log(`Dealer Win.`);
-            amount = 0;
-            msgZone.betNum.textContent = amount;
-            console.log('bank is: '+player.bank + ', amount is :' + amount);
-            //show ending
-            result.textContent = `Dealer Win`;
+            // console.log(`Player Win.`);
+            if(bust === false){
+                playerWin();
+            }else{
+                dealerWin();
+            }
 
+            // player.betNum.textContent = amount;
+            // player.bankNum.textContent = player.bank;
+            // console.log('bank is: '+player.bank + ', amount is :' + amount);
+            //show ending
+
+        }else if(playerSum < dealerSum) {   //dealer win
+            // console.log(`Dealer Win.`);
+            // amount = 0;
+            // msgZone.betNum.textContent = amount;
+            // console.log('bank is: '+player.bank + ', amount is :' + amount);
+            //show ending
+            if(bust === false){
+                dealerWin();
+            }else{
+                playerWin();
+            }
         }else{
-            console.log(`Tie.`);
+            // console.log(`Tie.`);
             player.bank = player.bank + amount;
             amount = 0;
-            msgZone.betNum.textContent = amount;
-            msgZone.bankNum.textContent = player.bank;
-            console.log('bank is: '+player.bank + ', amount is :' + amount);
+            // msgZone.betNum.textContent = amount;
+            // msgZone.bankNum.textContent = player.bank;
+            // console.log('bank is: '+player.bank + ', amount is :' + amount);
             //show ending
             result.textContent = `Tie!!`;
+            render();
         }
-    };
+    // };
+    // if(playerSum > 21){  //dealer win
+    //     console.log(`Dealer Win.`);
+    //     amount = 0;
+    //     player.betNum.textContent = amount;
+    //     console.log('bank is: '+ player.bank + ', amount is :' + amount);
+    //     //show ending
+    //     result.textContent = `Dealer Win`;
+    // }else if(dealerSum > 21){   //player win
+    //     console.log(`Player Win.`);
+    //     amount = amount * 2;
+    //     player.bank = player.bank + amount;
+    //     amount = 0;
+    //     msgZone.betNum.textContent = amount;
+    //     msgZone.bankNum.textContent = player.bank;
+    //     console.log('bank is: '+player.bank + ', amount is :' + amount);
+    //     //show ending
+    //     result.textContent = `Player Win`;
+    // }else{
+    //     if(playerSum > dealerSum) { //player win
+    //         console.log(`Player Win.`);
+    //         amount = amount * 2;
+    //         player.bank = player.bank + amount;
+    //         amount = 0;
+    //         player.betNum.textContent = amount;
+    //         player.bankNum.textContent = player.bank;
+    //         console.log('bank is: '+player.bank + ', amount is :' + amount);
+    //         //show ending
+    //         result.textContent = `Player Win`;
+    //     }else if(playerSum < dealerSum) {   //dealer win
+    //         console.log(`Dealer Win.`);
+    //         amount = 0;
+    //         msgZone.betNum.textContent = amount;
+    //         console.log('bank is: '+player.bank + ', amount is :' + amount);
+    //         //show ending
+    //         result.textContent = `Dealer Win`;
+
+    //     }else{
+    //         console.log(`Tie.`);
+    //         player.bank = player.bank + amount;
+    //         amount = 0;
+    //         msgZone.betNum.textContent = amount;
+    //         msgZone.bankNum.textContent = player.bank;
+    //         console.log('bank is: '+player.bank + ', amount is :' + amount);
+    //         //show ending
+    //         result.textContent = `Tie!!`;
+    //     }
+    // };
     console.log(`compare end`);
 }
 //dealer turn
@@ -225,12 +280,24 @@ function dealerTurn() {
             assignCard(dealer.represent);
         }
     }
-
     compareBoth();
     console.log(`dealerturn end`);
     document.querySelector('#dealer-cell img:first-child').setAttribute('src', `image/${dealer.cards[0]}.jpg`);
     showEl(lastPage);
     sleep(800);
+}
+// winner
+function playerWin() {
+    amount = 2 * parseInt(msgZone.betNum.textContent);
+    player.bank = player.bank + amount;
+    render;
+    result.textContent = `Player Win`;
+    render();
+}
+function dealerWin() {
+    amount = 0;
+    result.textContent = `Dealer Win`;
+    render();
 }
 //next round
 function nextRound() {
