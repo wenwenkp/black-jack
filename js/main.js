@@ -6,7 +6,7 @@ const chips = {     //represent each chip
     four : 500
 };
 
-const remainingNum = document.querySelector('#remaining-cards span');
+const remainingCards = document.querySelector('#remaining-cards span');
 const startPage = document.getElementById('start-page');
 const startBtn = document.getElementById("start-button");
 const mainPage = document.querySelector('main');
@@ -24,77 +24,68 @@ const nextBtn = document.querySelector('#last-page button:last-child');
 const player = {    //player
     cards : [],
     bank : null,
-    bankNum : document.querySelector('#bank-amount span'),
-    playerNum : document.querySelector('#player-total span'),
-    betNum : document.querySelector('#bet-amount span'),
-    sign : `player`
+    represent : `player`
 }
 const dealer = {    //dealer
     cards : [],
-    dealerNum : document.querySelector('#dealer-total span'),
-    sign : `dealer`
+    represent : `dealer`
 }
-let bust = false;
-var cards;
+const msgZone = {
+    bankNum : document.querySelector('#bank-amount span'),
+    playerNum : document.querySelector('#player-total span'),
+    dealerNum : document.querySelector('#dealer-total span'),
+    betNum : document.querySelector('#bet-amount span'),
+}
+let bust;
+let cards;
 let shuffleTimes = 100;
-let amount = 0; // represent amount of the bet
+let amount; // represent amount of the bet
 
 /*------------------event listeners---------------------*/
 //click start button for next page to start game
 startBtn.addEventListener('click', function(){
     hideEl(startPage);
+    init();
     showEl(mainPage);
 });
 
 //click to lay bet, update msg zone for amount and bank
 betBtn.addEventListener('click', function(evt) {
-
     let chip = evt.target.id;
     amount = chips[chip];
     player.bank = player.bank - amount;
-    player.betNum.textContent = amount + parseInt(player.betNum.textContent);
-    player.bankNum.textContent = player.bank;
-    console.log(`player lay amount ${amount}.`);
-
+    // msgZone.betNum.textContent = amount + parseInt(msgZone.betNum.textContent);
+    // msgZone.bankNum.textContent = player.bank;
+    render();
     hideEl(betBtn);
     showEl(playBtn);
-    assignPlayerCard();
-    assignPlayerCard();
-    player.playerNum.textContent = calculateTotal(player.cards);
-    console.log(`player's cards: ${player.cards}`);
-    assignDealerCard();
-    assignDealerCard();
-    console.log(`dealer's cards: ${dealer.cards}`);
-    console.log(`done bet button----------------------`);
+    assignCard(player.represent);
+    assignCard(player.represent);
+    // msgZone.playerNum.textContent = calculateTotal(player.cards);
+    assignCard(dealer.represent);
+    assignCard(dealer.represent);
+    console.log(dealer.cards);
 });
 //click to hit --- player turn
 hitBtn.addEventListener('click', function() {
-    assignPlayerCard();
-    player.playerNum.textContent = calculateTotal(player.cards);
-    console.log(player.cards);
-    checkBust(player.cards);
+    assignCard(player.represent);
+    // player.playerNum.textContent = calculateTotal(player.cards);
+    render();
 });
 //click to double
 doubleBtn.addEventListener('click', function() {
+    amount = parseInt(msgZone.betNum.textContent);
     player.bank = player.bank - amount;
-    player.bankNum.textContent = player.bank;
-    amount = amount * 2;
-    player.betNum.textContent = amount;
-    console.log(`current bank is ${player.bank} and amount is ${amount}`);
-
-    sleep(800);
-
+    render();
 });
 //click to stand -- dealer turn
 standBtn.addEventListener('click', dealerTurn);
 //click to next round
 nextBtn.addEventListener('click', nextRound);
-
 //click to start over
 startOverBtn.addEventListener('click', startOver);
 
 /*--------------------------functions-------------------*/
-init();
 //create game
 function prepareCards() {
     cards = [
@@ -108,23 +99,26 @@ function prepareCards() {
         1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 10, 10
     ];
     shuffleCards();
-    remainingNum.textContent = cards.length;
+    remainingCards.textContent = cards.length;
 }
 // initial the game
 function init() {
     prepareCards();
-    dealer.dealerNum.textContent = 0;
-    player.playerNum.textContent = 0;
     bust = false;
+    // msgZone.dealerNum.textContent = 0;
+    // msgZone.playerNum.textContent = 0;
     amount = 0; 
-    player.betNum.textContent = amount;
     player.bank = 1000;
-    player.bankNum.textContent = player.bank;
+    // msgZone.betNum.textContent = amount;
+    // msgZone.bankNum.textContent = player.bank;
+    render();
 }
-
 //render
 function render() {
-
+    msgZone.betNum.textContent = amount + parseInt(msgZone.betNum.textContent);
+    amount = 0;
+    msgZone.bankNum.textContent = player.bank;
+    msgZone.playerNum.textContent = calculateTotal(player.cards);
 }
 // hide and show elements
 function hideEl(element){
@@ -133,6 +127,8 @@ function hideEl(element){
 function showEl(element) {
     element.classList.remove('disappear-class');
 }
+
+
 //randomly switch array elements position 100 times by default
 function shuffleCards() {
     for(; shuffleTimes > 0; shuffleTimes--){
@@ -147,19 +143,9 @@ function shuffleCards() {
 function getRandomIndex() {
     return Math.floor(Math.random() * (cards.length - 1));
 }
-//assign cards
-// function assignPlayerCard(array) {
-//     let temp = cards.splice(getRandomIndex(), 1);
-//     array[array.length] = temp.pop();
-//     remainingNum.textContent = cards.length;
-// }
 //check bust
 function checkBust(array) {
-    console.log(`checking bust...`);
-    sleep(200);
-    console.log(`done checking. You are safe ... for now!`);
     if(calculateTotal(array) > 21) {
-        console.log(`You bust! And call dealer turn`);
         bust = true;
         dealerTurn();
     }
@@ -180,7 +166,7 @@ function compareBoth() {
     console.log('dealer total: '+ dealerSum);
 
     sleep(800);
-    dealer.dealerNum.textContent = parseInt(dealerSum);
+    msgZone.dealerNum.textContent = parseInt(dealerSum);
 
     if(playerSum > 21){  //dealer win
         console.log(`Dealer Win.`);
@@ -194,8 +180,8 @@ function compareBoth() {
         amount = amount * 2;
         player.bank = player.bank + amount;
         amount = 0;
-        player.betNum.textContent = amount;
-        player.bankNum.textContent = player.bank;
+        msgZone.betNum.textContent = amount;
+        msgZone.bankNum.textContent = player.bank;
         console.log('bank is: '+player.bank + ', amount is :' + amount);
         //show ending
         result.textContent = `Player Win`;
@@ -213,7 +199,7 @@ function compareBoth() {
         }else if(playerSum < dealerSum) {   //dealer win
             console.log(`Dealer Win.`);
             amount = 0;
-            player.betNum.textContent = amount;
+            msgZone.betNum.textContent = amount;
             console.log('bank is: '+player.bank + ', amount is :' + amount);
             //show ending
             result.textContent = `Dealer Win`;
@@ -222,8 +208,8 @@ function compareBoth() {
             console.log(`Tie.`);
             player.bank = player.bank + amount;
             amount = 0;
-            player.betNum.textContent = amount;
-            player.bankNum.textContent = player.bank;
+            msgZone.betNum.textContent = amount;
+            msgZone.bankNum.textContent = player.bank;
             console.log('bank is: '+player.bank + ', amount is :' + amount);
             //show ending
             result.textContent = `Tie!!`;
@@ -236,8 +222,7 @@ function dealerTurn() {
     hideEl(playBtn);
     if(bust === false){
         while(calculateTotal(dealer.cards) < 15) {
-            assignDealerCard();
-            checkBust(dealer.cards);
+            assignCard(dealer.represent);
         }
     }
 
@@ -257,8 +242,8 @@ function nextRound() {
     hideEl(lastPage);
     showEl(betBtn);
     bust = false;
-    removeCards(player.sign);
-    removeCards(dealer.sign);
+    removeCards(player.represent);
+    removeCards(dealer.represent);
     if((cards.length) < 50) prepareCards();
 }
 //start over
@@ -269,47 +254,104 @@ function startOver() {
     init();
     hideEl(lastPage);
     showEl(betBtn);
-    removeCards(player.sign);
-    removeCards(dealer.sign);
+    removeCards(player.represent);
+    removeCards(dealer.represent);
 }
 // get card pic
-function assignPlayerCard() {
-    let array = player.cards;
-    let temp = cards.splice(getRandomIndex(), 1);
-    array[array.length] = temp.pop();
-    remainingNum.textContent = cards.length;
-    let cardNum= array[array.length - 1];
-    let imgUrl;
-    if(cardNum === 10){
-        cardNum = Math.floor(Math.random() * 4) + 10;
-    }
-    imgUrl = `image/${cardNum}.jpg`;
-    let newImg = document.createElement('img');
-    document.querySelector('#player-cell').appendChild(newImg);
-    document.querySelector('#player-cell img:last-child').setAttribute(`src`, imgUrl);
-}
-function assignDealerCard() {
-    let array = dealer.cards;
-    let temp = cards.splice(getRandomIndex(), 1);
-    array[array.length] = temp.pop();
-    remainingNum.textContent = cards.length;
+// function assignPlayerCard() {
+//     let array = player.cards;
+//     let temp = cards.splice(getRandomIndex(), 1);
+//     array[array.length] = temp.pop();
+//     remainingCards.textContent = cards.length;
+//     let cardNum= array[array.length - 1];
+//     let imgUrl;
+//     if(cardNum === 10){
+//         cardNum = Math.floor(Math.random() * 4) + 10;
+//     }
+//     imgUrl = `image/${cardNum}.jpg`;
+//     let newImg = document.createElement('img');
+//     document.querySelector('#player-cell').appendChild(newImg);
+//     document.querySelector('#player-cell img:last-child').setAttribute(`src`, imgUrl);
+// }
+// function assignDealerCard() {
+//     let array = dealer.cards;
+//     let temp = cards.splice(getRandomIndex(), 1);
+//     array[array.length] = temp.pop();
+//     remainingCards.textContent = cards.length;
 
-    let imgUrl;
-    let cardNum = array[array.length - 1];
-    if(array.length === 1){
-        cardNum = `back`;
-    }
+//     let imgUrl;
+//     let cardNum = array[array.length - 1];
+//     if(array.length === 1){
+//         cardNum = `back`;
+//     }
+//     if(cardNum === 10){
+//         cardNum = Math.floor(Math.random() * 4) + 10;
+//     }
+//     imgUrl = `image/${cardNum}.jpg`;
+//     let newImg = document.createElement('img');
+//     document.querySelector('#dealer-cell').appendChild(newImg);
+//     document.querySelector('#dealer-cell img:last-child').setAttribute(`src`, imgUrl);
+//     if(cardNum === `back`){
+//         document.querySelector('#dealer-cell img:last-child').setAttribute(`class`, 'show-back');
+//     }
+// }
+function assignCard(receiver) {
+    let array;
+    if(receiver === 'player'){
+        array = player.cards;
+    }else{
+        array = dealer.cards;
+    };
+    let temp = cards.splice(getRandomIndex(), 1);
+    array[array.length] = temp.pop();
+    checkBust(array);
+    // remainingCards.textContent = cards.length;
+    let cardNum= array[array.length - 1];
     if(cardNum === 10){
         cardNum = Math.floor(Math.random() * 4) + 10;
     }
-    imgUrl = `image/${cardNum}.jpg`;
+    let imgUrl = `image/${cardNum}.jpg`;
     let newImg = document.createElement('img');
-    document.querySelector('#dealer-cell').appendChild(newImg);
-    document.querySelector('#dealer-cell img:last-child').setAttribute(`src`, imgUrl);
-    if(cardNum === `back`){
-        document.querySelector('#dealer-cell img:last-child').setAttribute(`class`, 'show-back');
+    document.querySelector(`#${receiver}-cell`).appendChild(newImg);
+
+    if(receiver === `player`){
+        document.querySelector(`#${receiver}-cell img:last-child`).setAttribute(`src`, imgUrl);
+
+    }else{
+        console.log(`1`);
+        if(array.length === 1){
+            console.log(`2`);
+            document.querySelector('#dealer-cell img:last-child').setAttribute(`src`, 'image/back.jpg');
+            document.querySelector('#dealer-cell img:last-child').setAttribute(`class`, 'show-back');
+        }else{
+            console.log(`3`);
+            document.querySelector(`#${receiver}-cell img:last-child`).setAttribute(`src`, imgUrl);
+        }
     }
+    render();
 }
+// function assignDealerCard() {
+    // let array = dealer.cards;
+    // let temp = cards.splice(getRandomIndex(), 1);
+    // array[array.length] = temp.pop();
+    // remainingCards.textContent = cards.length;
+
+    // let imgUrl;
+    // let cardNum = array[array.length - 1];
+    // if(array.length === 1){
+    //     cardNum = `back`;
+    // }
+    // if(cardNum === 10){
+    //     cardNum = Math.floor(Math.random() * 4) + 10;
+    // }
+    // imgUrl = `image/${cardNum}.jpg`;
+    // let newImg = document.createElement('img');
+    // document.querySelector('#dealer-cell').appendChild(newImg);
+    // document.querySelector('#dealer-cell img:last-child').setAttribute(`src`, imgUrl);
+    // if(cardNum === `back`){
+    //     document.querySelector('#dealer-cell img:last-child').setAttribute(`class`, 'show-back');
+    // }
+// }
 function removeCards(target) {
     let element;
     if(target === `player`) {
