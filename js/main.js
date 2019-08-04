@@ -41,11 +41,8 @@ let amount = 0; // represent amount of the bet
 
 /*------------------event listeners---------------------*/
 startBtn.addEventListener('click', function(){
-    fadeOut(startBtn);
-    sleep(2000);
-    fadeOut(startPage);
-    fadeIn(mainPage);
     hideEl(startPage);
+    showEl(mainPage);
 });
 //click start button for next page to start game
 // startBtn.addEventListener('click', function() {
@@ -69,9 +66,7 @@ betBtn.addEventListener('click', function(evt) {
     player.bankNum.textContent = player.bank;
     console.log(`player lay amount ${amount}.`);
 
-    sleep(1000);
     hideEl(betBtn);
-    sleep(1000);
     showEl(playBtn);
     assignPlayerCard();
     assignPlayerCard();
@@ -126,15 +121,16 @@ function init() {
     shuffleCards();
     remainingNum.textContent = cards.length;
     console.log(`current cards: ${cards}`);
-    player.bankNum.textContent = player.bank;
-    player.betNum.textContent = amount;
     dealer.dealerNum.textContent = 0;
     player.playerNum.textContent = 0;
     console.log(`current amount ${amount} and bank ${player.bank}`);
     console.log(`done init--------------------------------`);
     bust = false;
     amount = 0; 
+    player.betNum.textContent = amount;
     player.bank = 1000;
+    player.bankNum.textContent = player.bank;
+
 }
 //render
 function render() {
@@ -257,7 +253,7 @@ function dealerTurn() {
 
     compareBoth();
     console.log(`dealerturn end`);
-
+    document.querySelector('#dealer-cell img:first-child').setAttribute('src', `image/${dealer.cards[0]}.jpg`);
     showEl(lastPage);
     sleep(800);
 }
