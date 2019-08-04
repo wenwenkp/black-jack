@@ -105,9 +105,8 @@ startOverBtn.addEventListener('click', startOver);
 
 /*--------------------------functions-------------------*/
 init();
-
-// initial the game
-function init() {
+//create game
+function prepareCards() {
     cards = [
         1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 10, 10, //from A to K
         1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 10, 10,
@@ -120,18 +119,19 @@ function init() {
     ];
     shuffleCards();
     remainingNum.textContent = cards.length;
-    console.log(`current cards: ${cards}`);
+}
+// initial the game
+function init() {
+    prepareCards();
     dealer.dealerNum.textContent = 0;
     player.playerNum.textContent = 0;
-    console.log(`current amount ${amount} and bank ${player.bank}`);
-    console.log(`done init--------------------------------`);
     bust = false;
     amount = 0; 
     player.betNum.textContent = amount;
     player.bank = 1000;
     player.bankNum.textContent = player.bank;
-
 }
+
 //render
 function render() {
 
@@ -269,6 +269,7 @@ function nextRound() {
     bust = false;
     removeCards(player.sign);
     removeCards(dealer.sign);
+    if((cards.length) < 50) prepareCards();
 }
 //start over
 function startOver() {
