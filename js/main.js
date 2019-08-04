@@ -40,22 +40,12 @@ let shuffleTimes = 100;
 let amount = 0; // represent amount of the bet
 
 /*------------------event listeners---------------------*/
+//click start button for next page to start game
 startBtn.addEventListener('click', function(){
     hideEl(startPage);
     showEl(mainPage);
 });
-//click start button for next page to start game
-// startBtn.addEventListener('click', function() {
-//     startBtn.style.opacity = 1;
-//     startPage.style.transition = 1;
 
-//     startBtn.style.opacity = 1;
-
-//     hideEl(startPage);
-//     sleep(300);
-//     showEl(mainPage);
-//     console.log(`done startbutton------------------`);
-// });
 //click to lay bet, update msg zone for amount and bank
 betBtn.addEventListener('click', function(evt) {
 
@@ -341,14 +331,4 @@ function sleep(numberMillis){
     now = new Date();
     if(now.getTime() > exitTime) return;
   }
-}
-
-function fadeIn(el){
-    el.classList.add('fade-in');
-    el.classList.remove('fade-out');  
-}
-  
-function fadeOut(el){
-    el.classList.add('fade-out');
-    el.classList.remove('fade-in');
 }

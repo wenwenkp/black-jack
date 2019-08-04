@@ -29,17 +29,6 @@ button:hover {
 .disappear-class {
     display: none !important;
 }
-.fade-in {
-    opacity: 1;
-    transition: opacity 1000ms;
-} 
-.fade-out {
-    opacity: 0;
-    transition: opacity 1000ms;
-}
-
-
-
 
 /* start page -------------------------------*/
 #start-page {
