@@ -90,7 +90,7 @@ main {
     border-radius: 50%;
 }
 #bet-buttons > img:hover {
-    box-shadow: 15px 15px 50px rgba(209, 3, 3, 0.2);
+    box-shadow: 0px 50px 50px rgb(229, 245, 3);
 }
 /* play buttons */
 #play-buttons {
