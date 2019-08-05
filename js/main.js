@@ -6,18 +6,18 @@ const chips = {     //represent each chip
     four : 500
 };
 
-const startPage = document.getElementById('start-page');
-const startBtn = document.getElementById("start-button");
-const mainPage = document.querySelector('main');
+// const startPage = document.getElementById('start-page');
+// const startBtn = document.getElementById("start-button");
+// const mainPage = document.querySelector('main');
 const betBtn = document.getElementById('bet-buttons');
 const playBtn = document.getElementById('play-buttons');
-const hitBtn = document.querySelector('#play-buttons button:first-child');
-const doubleBtn = document.querySelector('#play-buttons button:nth-child(2)');
-const standBtn = document.querySelector('#play-buttons button:last-child');
+// const hitBtn = document.querySelector('#play-buttons button:first-child');
+// const doubleBtn = document.querySelector('#play-buttons button:nth-child(2)');
+// const standBtn = document.querySelector('#play-buttons button:last-child');
 const lastPage = document.getElementById('last-page');
 const result = document.querySelector('h1');
-const startOverBtn = document.querySelector('#last-page button:nth-child(2)');
-const nextBtn = document.querySelector('#last-page button:last-child');
+// const startOverBtn = document.querySelector('#last-page button:nth-child(2)');
+// const nextBtn = document.querySelector('#last-page button:last-child');
 
 /*---------------------------variables----------------*/
 const player = {    //player
@@ -43,14 +43,13 @@ let amount; // represent amount of the bet
 
 /*------------------event listeners---------------------*/
 //click start button for next page to start game
-startBtn.addEventListener('click', function(){
-    hideEl(startPage);
+document.getElementById("start-button").addEventListener('click', function(){
+    hideEl(document.getElementById('start-page'));
     prepareCards();
     init();
     render();
-    showEl(mainPage);
+    showEl(document.querySelector('main'));
 });
-
 //click to lay bet, update msg zone for amount and bank
 betBtn.addEventListener('click', function(evt) {
     let chip = evt.target.id;
@@ -63,26 +62,24 @@ betBtn.addEventListener('click', function(evt) {
     assignCard(dealer.represent);
     assignCard(dealer.represent);
     render();
-
-    console.log(dealer.cards);
 });
 //click to hit --- player turn
-hitBtn.addEventListener('click', function() {
+document.querySelector('#play-buttons button:first-child').addEventListener('click', function() {
     assignCard(player.represent);
     render();
 });
 //click to double
-doubleBtn.addEventListener('click', function() {
+document.querySelector('#play-buttons button:nth-child(2)').addEventListener('click', function() {
     amount = parseInt(msgZone.betNum.textContent) * 2;
     player.bank = player.bank - parseInt(msgZone.betNum.textContent);
     render();
 });
 //click to stand -- dealer turn
-standBtn.addEventListener('click', dealerTurn);
+document.querySelector('#play-buttons button:last-child').addEventListener('click', dealerTurn);
 //click to next round
-nextBtn.addEventListener('click', nextRound);
+document.querySelector('#last-page button:last-child').addEventListener('click', nextRound);
 //click to start over
-startOverBtn.addEventListener('click', startOver);
+document.querySelector('#last-page button:nth-child(2)').addEventListener('click', startOver);
 
 /*--------------------------functions-------------------*/
 //create game
@@ -124,7 +121,6 @@ function hideEl(element){
 function showEl(element) {
     element.classList.remove('disappear-class');
 }
-
 //randomly switch array elements position 100 times by default
 function shuffleCards() {
     for(; shuffleTimes > 0; shuffleTimes--){
@@ -227,7 +223,6 @@ function assignCard(receiver) {
     let temp = cards.splice(getRandomIndex(), 1);
     array[array.length] = temp.pop();
     checkBust(array);
-    // remainingCards.textContent = cards.length;
     let cardNum= array[array.length - 1];
     if(cardNum === 10){
         cardNum = Math.floor(Math.random() * 4) + 10;
@@ -235,18 +230,13 @@ function assignCard(receiver) {
     let imgUrl = `image/${cardNum}.jpg`;
     let newImg = document.createElement('img');
     document.querySelector(`#${receiver}-cell`).appendChild(newImg);
-
     if(receiver === `player`){
         document.querySelector(`#${receiver}-cell img:last-child`).setAttribute(`src`, imgUrl);
-
     }else{
-        console.log(`1`);
         if(array.length === 1){
-            console.log(`2`);
             document.querySelector('#dealer-cell img:last-child').setAttribute(`src`, 'image/back.jpg');
             document.querySelector('#dealer-cell img:last-child').setAttribute(`class`, 'show-back');
         }else{
-            console.log(`3`);
             document.querySelector(`#${receiver}-cell img:last-child`).setAttribute(`src`, imgUrl);
         }
     }
