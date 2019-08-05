@@ -65,6 +65,7 @@ document.querySelector('#play-buttons button:nth-child(2)').addEventListener('cl
     amount = parseInt(msgZone.betNum.textContent) * 2;
     player.bank = player.bank - parseInt(msgZone.betNum.textContent);
     render();
+    dealerTurn();
 });
 //click to stand -- dealer turn
 document.querySelector('#play-buttons button:last-child').addEventListener('click', dealerTurn);
@@ -206,7 +207,6 @@ function startOver() {
     hideEl(lastPage);
     init();
     player.bank = 1000;
-    console.log(player.bank);
     render();
     checkBank();
     showEl(betBtn);
