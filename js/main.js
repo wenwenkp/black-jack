@@ -5,6 +5,9 @@ const chips = {     //represent each chip
     three : 100,
     four : 500
 };
+var suits = ['s', 'c', 'd', 'h'];
+var ranks = ['A','02', '03', '04', '05', '06', '07', '08', '09', '10', 'J', 'Q', 'K'];
+var types = ['spades', 'clubs', 'diamonds', 'hearts'];
 
 const betBtn = document.getElementById('bet-buttons');
 const playBtn = document.getElementById('play-buttons');
@@ -116,7 +119,7 @@ function dealerTurn() {
         }
     }
     compareBoth();
-    document.querySelector('#dealer-cell img:first-child').setAttribute('src', `image/${dealer.cards[0]}.jpg`);
+    document.querySelector('#dealer-cell div:first-child').setAttribute('url', `images/${types[0]}/${types[0]}-${suits[0]}0${1}.jpg`);
     showEl(lastPage);
     checkBank();
 }
@@ -164,23 +167,32 @@ function assignCard(receiver) {
     let temp = cards.splice(getRandomIndex(), 1);
     array[array.length] = temp.pop();
     checkBust(array);
+    // ---------------------------
+    let i = Math.floor(Math.random() * 4);
     let cardNum= array[array.length - 1];
     if(cardNum === 10){
         cardNum = Math.floor(Math.random() * 4) + 10;
     }
-    let imgUrl = `image/${cardNum}.jpg`;
-    let newImg = document.createElement('img');
+
+    let imgUrl = `images/${types[i]}/${types[i]}-${suits[i]}${ranks[cardNum-1]}.svg`;
+    let newImg = document.createElement('div');
     document.querySelector(`#${receiver}-cell`).appendChild(newImg);
     if(receiver === `player`){
-        document.querySelector(`#${receiver}-cell img:last-child`).setAttribute(`src`, imgUrl);
+        document.querySelector(`#${receiver}-cell div:last-child`).setAttribute(`background-image`, imgUrl);
+        document.querySelector(`#${receiver}-cell div:last-child`).classList.add(`card`);
+        document.querySelector(`#${receiver}-cell div:last-child`).classList.add(`${suits[i]}${ranks[cardNum-1]}`);
     }else{
         if(array.length === 1){
-            document.querySelector('#dealer-cell img:last-child').setAttribute(`src`, 'image/back.jpg');
-            document.querySelector('#dealer-cell img:last-child').setAttribute(`class`, 'show-back');
+            document.querySelector('#dealer-cell div:last-child').setAttribute(`background-image`, 'images/backs/red.svg');
+            document.querySelector(`#${receiver}-cell div:last-child`).classList.add(`card`);
+            document.querySelector(`#${receiver}-cell div:last-child`).classList.add(`red`);
         }else{
-            document.querySelector(`#${receiver}-cell img:last-child`).setAttribute(`src`, imgUrl);
+            document.querySelector(`#${receiver}-cell div:last-child`).setAttribute(`background-image`, imgUrl);
+            document.querySelector(`#${receiver}-cell div:last-child`).classList.add(`card`);
+            document.querySelector(`#${receiver}-cell div:last-child`).classList.add(`${suits[i]}${ranks[cardNum-1]}`);
         }
     }
+    // -------------------------
     render();
 }
 function removeCards() {
