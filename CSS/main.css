@@ -49,7 +49,6 @@ button:hover {
     padding: 15px 32px;
 }
 
-
 /* main ---------------------------------------*/
 main {
     min-height: 100vh;
@@ -83,13 +82,13 @@ main {
     grid-template-rows: auto;
     grid-gap: 50px;
 }
-#bet-buttons > img {
+#bet-buttons > input {
     width: 150px;
     cursor: pointer; 
     border: hidden 1px transparent;
     border-radius: 50%;
 }
-#bet-buttons > img:hover {
+#bet-buttons > input:hover {
     box-shadow: 0px 50px 50px rgb(229, 245, 3);
 }
 /* play buttons */

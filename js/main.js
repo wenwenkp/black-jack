@@ -116,6 +116,7 @@ function dealerTurn() {
     compareBoth();
     document.querySelector('#dealer-cell img:first-child').setAttribute('src', `image/${dealer.cards[0]}.jpg`);
     showEl(lastPage);
+    checkBank();
 }
 //compare result or bust is true
 function compareBoth() {
@@ -204,7 +205,10 @@ function startOver() {
     removeCards();
     hideEl(lastPage);
     init();
+    player.bank = 1000;
+    console.log(player.bank);
     render();
+    checkBank();
     showEl(betBtn);
 }
 //check bust
@@ -235,6 +239,26 @@ function shuffleCards() {
 //get random index number in current card array
 function getRandomIndex() {
     return Math.floor(Math.random() * (cards.length - 1));
+}
+//show chips images according to remaining bank amount
+function checkBank() {
+    if(player.bank <= 0){
+        document.querySelector('#last-page button:last-child').setAttribute(`disabled`, `true`);
+    } else if(player.bank < 50) {
+        document.getElementById(`two`).setAttribute(`disabled`, `true`);
+        document.getElementById('three').setAttribute(`disabled`, `true`);
+        document.getElementById(`four`).setAttribute(`disabled`, `true`);
+    }else if(player.bank < 100){
+        document.getElementById('three').setAttribute(`disabled`, `true`);
+        document.getElementById(`four`).setAttribute(`disabled`, `true`);
+    }else if(player.bank < 500){
+        document.getElementById(`four`).setAttribute(`disabled`, `true`);
+    }else{
+        document.querySelector('#last-page button:last-child').removeAttribute(`disabled`);
+        document.getElementById(`two`).removeAttribute(`disabled`);
+        document.getElementById('three').removeAttribute(`disabled`);
+        document.getElementById(`four`).removeAttribute(`disabled`);
+    }
 }
 // hide and show elements
 function hideEl(element){
