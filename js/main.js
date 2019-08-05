@@ -53,6 +53,7 @@ betBtn.addEventListener('click', function(evt) {
     assignCard(player.represent);
     assignCard(dealer.represent);
     assignCard(dealer.represent);
+    disableDouble();    
     render();
 });
 //click to hit --- player turn
@@ -240,7 +241,7 @@ function shuffleCards() {
 function getRandomIndex() {
     return Math.floor(Math.random() * (cards.length - 1));
 }
-//show chips images according to remaining bank amount
+//disable chips images according to remaining bank amount
 function checkBank() {
     if(player.bank <= 0){
         document.querySelector('#last-page button:last-child').setAttribute(`disabled`, `true`);
@@ -258,6 +259,14 @@ function checkBank() {
         document.getElementById(`two`).removeAttribute(`disabled`);
         document.getElementById('three').removeAttribute(`disabled`);
         document.getElementById(`four`).removeAttribute(`disabled`);
+    }
+}
+//validation for double button
+function disableDouble() {
+    if(amount > player.bank){
+        document.querySelector('#play-buttons button:nth-child(2)').setAttribute(`disabled`, `true`);
+    }else{
+        document.querySelector('#play-buttons button:nth-child(2)').removeAttribute(`disabled`);
     }
 }
 // hide and show elements
