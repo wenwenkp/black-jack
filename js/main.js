@@ -116,7 +116,37 @@ function render() {
     msgZone.bankNum.textContent = player.bank;
     msgZone.playerNum.textContent = calculateTotal(player.cards);
     msgZone.remainingCards.textContent = cards.length;
-    switchPage();
+    // switchPage();
+    switch(page) {
+        case `bet`:
+            hideEl(startPage);
+            showEl(mainPage);
+            showEl(betBtn);
+            hideEl(playBtn);
+            hideEl(lastPage);
+            msgZone.dealerNum.textContent = 0;
+            msgZone.playerNum.textContent = 0;
+            disableChips();
+            break;
+        case `play`:
+            showEl(mainPage);
+            hideEl(betBtn);
+            showEl(playBtn);
+            hideEl(lastPage);
+            disableDouble();
+            break;
+        case `last`:
+            msgZone.dealerNum.textContent = parseInt(calculateTotal(dealer.cards));
+            document.querySelector(`#dealer-cell div:first-child`).classList.remove(`red`);
+            document.querySelector('#dealer-cell div:first-child').setAttribute('background-image', `images/${types[0]}/${types[0]}-${suits[0]}${ranks[dealer.cards[0]]}.svg`);
+            document.querySelector(`#dealer-cell div:first-child`).classList.add(`${suits[0]}${ranks[dealer.cards[0]-1]}`);
+            showEl(mainPage);
+            hideEl(betBtn);
+            hideEl(playBtn);
+            showEl(lastPage);
+            disableNextRound();
+            break;
+    }
 }
 //dealer turn
 function dealerTurn() {
@@ -129,16 +159,11 @@ function dealerTurn() {
         }
     }
     compareBoth();
-    // document.querySelector(`#dealer-cell div:first-child`).classList.remove(`red`);
-    // document.querySelector('#dealer-cell div:first-child').setAttribute('background-image', `images/${types[0]}/${types[0]}-${suits[0]}${ranks[dealer.cards[0]]}.svg`);
-    // document.querySelector(`#dealer-cell div:first-child`).classList.add(`${suits[0]}${ranks[dealer.cards[0]-1]}`);
-    // showEl(lastPage);
 }
 //compare result or bust is true
 function compareBoth() {
     let playerSum = calculateTotal(player.cards);
     let dealerSum = calculateTotal(dealer.cards);
-    // msgZone.dealerNum.textContent = parseInt(dealerSum);
     if(playerSum > dealerSum) {
         if(bust === false){
             playerWin();
@@ -303,38 +328,38 @@ function showEl(element) {
     element.classList.remove('disappear-class');
 }
 //swtich page
-function switchPage() {
-    switch(page) {
-        case `bet`:
-            hideEl(startPage);
-            showEl(mainPage);
-            showEl(betBtn);
-            hideEl(playBtn);
-            hideEl(lastPage);
-            msgZone.dealerNum.textContent = 0;
-            msgZone.playerNum.textContent = 0;
-            disableChips();
-            break;
-        case `play`:
-            showEl(mainPage);
-            hideEl(betBtn);
-            showEl(playBtn);
-            hideEl(lastPage);
-            disableDouble();
-            break;
-        case `last`:
-            msgZone.dealerNum.textContent = parseInt(calculateTotal(dealer.cards));
-            document.querySelector(`#dealer-cell div:first-child`).classList.remove(`red`);
-            document.querySelector('#dealer-cell div:first-child').setAttribute('background-image', `images/${types[0]}/${types[0]}-${suits[0]}${ranks[dealer.cards[0]]}.svg`);
-            document.querySelector(`#dealer-cell div:first-child`).classList.add(`${suits[0]}${ranks[dealer.cards[0]-1]}`);
-            showEl(mainPage);
-            hideEl(betBtn);
-            hideEl(playBtn);
-            showEl(lastPage);
-            disableNextRound();
-            break;
-    }
-}
+// function switchPage() {
+    // switch(page) {
+    //     case `bet`:
+    //         hideEl(startPage);
+    //         showEl(mainPage);
+    //         showEl(betBtn);
+    //         hideEl(playBtn);
+    //         hideEl(lastPage);
+    //         msgZone.dealerNum.textContent = 0;
+    //         msgZone.playerNum.textContent = 0;
+    //         disableChips();
+    //         break;
+    //     case `play`:
+    //         showEl(mainPage);
+    //         hideEl(betBtn);
+    //         showEl(playBtn);
+    //         hideEl(lastPage);
+    //         disableDouble();
+    //         break;
+    //     case `last`:
+    //         msgZone.dealerNum.textContent = parseInt(calculateTotal(dealer.cards));
+    //         document.querySelector(`#dealer-cell div:first-child`).classList.remove(`red`);
+    //         document.querySelector('#dealer-cell div:first-child').setAttribute('background-image', `images/${types[0]}/${types[0]}-${suits[0]}${ranks[dealer.cards[0]]}.svg`);
+    //         document.querySelector(`#dealer-cell div:first-child`).classList.add(`${suits[0]}${ranks[dealer.cards[0]-1]}`);
+    //         showEl(mainPage);
+    //         hideEl(betBtn);
+    //         hideEl(playBtn);
+    //         showEl(lastPage);
+    //         disableNextRound();
+    //         break;
+    // }
+// }
 //to delay next move
 // function sleep(numberMillis){
 //   var now = new Date();
