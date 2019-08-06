@@ -143,17 +143,17 @@ function compareBoth() {
     if(playerSum > dealerSum) {
         if(bust === false){
             bank = bank + 2 * parseInt(msgZone.betNum.textContent);
-            result.textContent = `Player Win`;
+            result.textContent = `😍 🥳Player Win`;
         }else{
-            result.textContent = `Dealer Win`;
+            result.textContent = `💸💸💸🥺Dealer Win😩`;
 
         }
     }else if(playerSum < dealerSum) {  
         if(bust === false){
-            result.textContent = `Dealer Win`;
+            result.textContent = `💸💸💸🥺Dealer Win😩`;
         }else{
             bank = bank + 2 * parseInt(msgZone.betNum.textContent);
-            result.textContent = `Player Win`;
+            result.textContent = `😍 🥳Player Win`;
         }
     }else{
         bank = bank + betAmount;
