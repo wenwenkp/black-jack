@@ -42,26 +42,20 @@ let page;
 /*------------------event listeners---------------------*/
 //click start button for next page to start game
 document.getElementById("start-button").addEventListener('click', function(){
-    // hideEl(document.getElementById('start-page'));
-    prepareCards();
     init();
     page = `bet`;
     render();
-    
-    // showEl(document.querySelector('main'));
 });
 //click to lay bet, update msg zone for amount and bank
 betBtn.addEventListener('click', function(evt) {
     let chip = evt.target.id;
     amount = chips[chip];
     player.bank = player.bank - amount;
-    // hideEl(betBtn);
-    // showEl(playBtn);
     assignCard(player.represent);
     assignCard(player.represent);
     assignCard(dealer.represent);
     assignCard(dealer.represent);
-    disableDouble();  
+    // disableDouble();  
     page = `play`;  
     render();
 });
@@ -69,7 +63,7 @@ betBtn.addEventListener('click', function(evt) {
 document.querySelector('#play-buttons button:first-child').addEventListener('click', function() {
     assignCard(player.represent);
     render();
-    checkBank();
+    // disableChips();
 });
 //click to double
 document.querySelector('#play-buttons button:nth-child(2)').addEventListener('click', function() {
@@ -106,13 +100,19 @@ function prepareCards() {
 }
 // initial the game
 function init() {
+    prepareCards();
+    player.bank = 1000;
+    newRound();
+    // msgZone.dealerNum.textContent = 0;
+    // msgZone.playerNum.textContent = 0;
+    render();
+}
+//function new round
+function newRound() {
     player.cards = [];
     dealer.cards = [];
     bust = false;
     amount = 0; 
-    msgZone.dealerNum.textContent = 0;
-    msgZone.playerNum.textContent = 0;
-    render();
 }
 //render
 function render() {
@@ -120,6 +120,7 @@ function render() {
     msgZone.bankNum.textContent = player.bank;
     msgZone.playerNum.textContent = calculateTotal(player.cards);
     msgZone.remainingCards.textContent = cards.length;
+    // disableChips();
     switchPage();
 }
 //dealer turn
@@ -137,7 +138,7 @@ function dealerTurn() {
     document.querySelector('#dealer-cell div:first-child').setAttribute('background-image', `images/${types[0]}/${types[0]}-${suits[0]}${ranks[dealer.cards[0]]}.svg`);
     document.querySelector(`#dealer-cell div:first-child`).classList.add(`${suits[0]}${ranks[dealer.cards[0]-1]}`);
     showEl(lastPage);
-    checkBank();
+    // disableChips();
 }
 //compare result or bust is true
 function compareBoth() {
@@ -224,24 +225,18 @@ function removeCards() {
 //next round
 function nextRound() {
     removeCards();
-    // hideEl(lastPage);
-    init();
+    newRound();
     if((cards.length) < 50) prepareCards();
     page = `bet`;
     render();
-    // showEl(betBtn);
 }
 //start over
 function startOver() {
     removeCards();
     page = `bet`;
-    // hideEl(lastPage);
-    prepareCards();
     init();
-    player.bank = 1000;
     render();
-    checkBank();
-    // showEl(betBtn);
+    // disableChips();
 }
 //check bust
 function checkBust(array) {
@@ -273,7 +268,7 @@ function getRandomIndex() {
     return Math.floor(Math.random() * (cards.length - 1));
 }
 //disable chips images according to remaining bank amount
-function checkBank() {
+function disableChips() {
     if(player.bank <= 0){
         document.querySelector('#last-page button:last-child').setAttribute(`disabled`, `true`);
     } else if(player.bank < 50) {
@@ -281,9 +276,12 @@ function checkBank() {
         document.getElementById('three').setAttribute(`disabled`, `true`);
         document.getElementById(`four`).setAttribute(`disabled`, `true`);
     }else if(player.bank < 100){
+        document.getElementById(`two`).removeAttribute(`disabled`);
         document.getElementById('three').setAttribute(`disabled`, `true`);
         document.getElementById(`four`).setAttribute(`disabled`, `true`);
     }else if(player.bank < 500){
+        document.getElementById(`two`).removeAttribute(`disabled`);
+        document.getElementById('three').removeAttribute(`disabled`);
         document.getElementById(`four`).setAttribute(`disabled`, `true`);
     }else{
         document.querySelector('#last-page button:last-child').removeAttribute(`disabled`);
@@ -316,12 +314,16 @@ function switchPage() {
             showEl(betBtn);
             hideEl(playBtn);
             hideEl(lastPage);
+            msgZone.dealerNum.textContent = 0;
+            msgZone.playerNum.textContent = 0;
+            disableChips();
             break;
         case `play`:
             showEl(mainPage);
             hideEl(betBtn);
             showEl(playBtn);
             hideEl(lastPage);
+            disableDouble();
             break;
         case `last`:
             showEl(mainPage);
