@@ -9,6 +9,8 @@ var suits = ['s', 'c', 'd', 'h'];
 var ranks = ['A','02', '03', '04', '05', '06', '07', '08', '09', '10', 'J', 'Q', 'K'];
 var types = ['spades', 'clubs', 'diamonds', 'hearts'];
 
+const startPage = document.getElementById('start-page');
+const mainPage = document.querySelector('main');
 const betBtn = document.getElementById('bet-buttons');
 const playBtn = document.getElementById('play-buttons');
 const lastPage = document.getElementById('last-page');
@@ -35,44 +37,53 @@ let bust;
 let cards;
 let shuffleTimes = 100;
 let amount; // represent amount of the bet
+let page;
 
 /*------------------event listeners---------------------*/
 //click start button for next page to start game
 document.getElementById("start-button").addEventListener('click', function(){
-    hideEl(document.getElementById('start-page'));
+    // hideEl(document.getElementById('start-page'));
     prepareCards();
     init();
+    page = `bet`;
     render();
-    showEl(document.querySelector('main'));
+    
+    // showEl(document.querySelector('main'));
 });
 //click to lay bet, update msg zone for amount and bank
 betBtn.addEventListener('click', function(evt) {
     let chip = evt.target.id;
     amount = chips[chip];
     player.bank = player.bank - amount;
-    hideEl(betBtn);
-    showEl(playBtn);
+    // hideEl(betBtn);
+    // showEl(playBtn);
     assignCard(player.represent);
     assignCard(player.represent);
     assignCard(dealer.represent);
     assignCard(dealer.represent);
-    disableDouble();    
+    disableDouble();  
+    page = `play`;  
     render();
 });
 //click to hit --- player turn
 document.querySelector('#play-buttons button:first-child').addEventListener('click', function() {
     assignCard(player.represent);
     render();
+    checkBank();
 });
 //click to double
 document.querySelector('#play-buttons button:nth-child(2)').addEventListener('click', function() {
     amount = parseInt(msgZone.betNum.textContent) * 2;
     player.bank = player.bank - parseInt(msgZone.betNum.textContent);
+    page = `last`;
     render();
     dealerTurn();
 });
 //click to stand -- dealer turn
-document.querySelector('#play-buttons button:last-child').addEventListener('click', dealerTurn);
+document.querySelector('#play-buttons button:last-child').addEventListener('click', function() {
+    page = `last`;
+    dealerTurn();
+});
 //click to next round
 document.querySelector('#last-page button:last-child').addEventListener('click', nextRound);
 //click to start over
@@ -109,10 +120,13 @@ function render() {
     msgZone.bankNum.textContent = player.bank;
     msgZone.playerNum.textContent = calculateTotal(player.cards);
     msgZone.remainingCards.textContent = cards.length;
+    switchPage();
 }
 //dealer turn
 function dealerTurn() {
-    hideEl(playBtn);
+    page = `last`;
+    render();
+    // hideEl(playBtn);
     if(bust === false){
         while(calculateTotal(dealer.cards) < 15) {
             assignCard(dealer.represent);
@@ -210,21 +224,24 @@ function removeCards() {
 //next round
 function nextRound() {
     removeCards();
-    hideEl(lastPage);
+    // hideEl(lastPage);
     init();
     if((cards.length) < 50) prepareCards();
+    page = `bet`;
     render();
-    showEl(betBtn);
+    // showEl(betBtn);
 }
 //start over
 function startOver() {
     removeCards();
-    hideEl(lastPage);
+    page = `bet`;
+    // hideEl(lastPage);
+    prepareCards();
     init();
     player.bank = 1000;
     render();
     checkBank();
-    showEl(betBtn);
+    // showEl(betBtn);
 }
 //check bust
 function checkBust(array) {
@@ -289,6 +306,30 @@ function hideEl(element){
 }
 function showEl(element) {
     element.classList.remove('disappear-class');
+}
+//swtich page
+function switchPage() {
+    switch(page) {
+        case `bet`:
+            hideEl(startPage);
+            showEl(mainPage);
+            showEl(betBtn);
+            hideEl(playBtn);
+            hideEl(lastPage);
+            break;
+        case `play`:
+            showEl(mainPage);
+            hideEl(betBtn);
+            showEl(playBtn);
+            hideEl(lastPage);
+            break;
+        case `last`:
+            showEl(mainPage);
+            hideEl(betBtn);
+            hideEl(playBtn);
+            showEl(lastPage);
+            break;
+    }
 }
 //to delay next move
 // function sleep(numberMillis){
