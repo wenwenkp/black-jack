@@ -317,33 +317,34 @@ function removeCards() {
 //disable chips images according to remaining bank amount
 function disableChips() {
     if(bank < 50) {
-        // document.getElementById(`two`).setAttribute(`disabled`, `true`);
         chips.two.selector.setAttribute(`disabled`, `true`);
         chips.three.selector.setAttribute(`disabled`, `true`);
         chips.four.selector.setAttribute(`disabled`, `true`);
-        // document.getElementById('three').setAttribute(`disabled`, `true`);
-        // document.getElementById(`four`).setAttribute(`disabled`, `true`);
+        chips.two.selector.classList.add(`noHover`);
+        chips.three.selector.classList.add(`noHover`);
+        chips.four.selector.classList.add(`noHover`);
+
     }else if(bank < 100){
         chips.two.selector.removeAttribute(`disabled`);
         chips.three.selector.setAttribute(`disabled`, `true`);
         chips.four.selector.setAttribute(`disabled`, `true`);
-        // document.getElementById(`two`).removeAttribute(`disabled`);
-        // document.getElementById('three').setAttribute(`disabled`, `true`);
-        // document.getElementById(`four`).setAttribute(`disabled`, `true`);
+        chips.two.selector.classList.remove(`noHover`);
+        chips.three.selector.classList.add(`noHover`);
+        chips.four.selector.classList.add(`noHover`);
     }else if(bank < 500){
         chips.two.selector.removeAttribute(`disabled`);
         chips.three.selector.removeAttribute(`disabled`);
         chips.four.selector.setAttribute(`disabled`, `true`);
-        // document.getElementById(`two`).removeAttribute(`disabled`);
-        // document.getElementById('three').removeAttribute(`disabled`);
-        // document.getElementById(`four`).setAttribute(`disabled`, `true`);
+        chips.two.selector.classList.remove(`noHover`);
+        chips.three.selector.classList.remove(`noHover`);
+        chips.four.selector.classList.add(`noHover`);
     }else{
         chips.two.selector.removeAttribute(`disabled`);
         chips.three.selector.removeAttribute(`disabled`);
         chips.four.selector.removeAttribute(`disabled`);
-        // document.getElementById(`two`).removeAttribute(`disabled`);
-        // document.getElementById('three').removeAttribute(`disabled`);
-        // document.getElementById(`four`).removeAttribute(`disabled`);
+        chips.two.selector.classList.remove(`noHover`);
+        chips.three.selector.classList.remove(`noHover`);
+        chips.four.selector.classList.remove(`noHover`);
     }
 }
 //validation for double button

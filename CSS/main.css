@@ -32,6 +32,10 @@ button:hover {
 .disappear-class {
     display: none !important;
 }
+.noHover{
+    pointer-events: none !important;
+    opacity: 0.3;
+}
 
 /* start page -------------------------------*/
 #start-page {
