@@ -5,9 +5,9 @@ const chips = {     //represent each chip
     three : 100,
     four : 500
 };
-var suits = ['s', 'c', 'd', 'h'];
-var ranks = ['A','02', '03', '04', '05', '06', '07', '08', '09', '10', 'J', 'Q', 'K'];
-var types = ['spades', 'clubs', 'diamonds', 'hearts'];
+const suits = ['s', 'c', 'd', 'h'];
+const ranks = ['A','02', '03', '04', '05', '06', '07', '08', '09', '10', 'J', 'Q', 'K'];
+const types = ['spades', 'clubs', 'diamonds', 'hearts'];
 
 const mainPage = document.querySelector('main');
 const betBtn = document.getElementById('bet-buttons');
@@ -26,7 +26,6 @@ const dealer = {    //dealer
     cards : [],
     represent : `dealer`,
     cardsDisplayed : null,
-    turn : false,
 }
 const msgZone = {
     remainingCards : document.querySelector('#remaining-cards span'),
@@ -346,11 +345,3 @@ function hideEl(element){
 function showEl(element) {
     element.classList.remove('disappear-class');
 }
-//to delay next move
-// function sleep(numberMillis){
-//   var now = new Date();
-//   var exitTime = now.getTime() + numberMillis;
-//   while(true) {
-//     now = new Date();
-//     if(now.getTime() > exitTime) return;
-//}
