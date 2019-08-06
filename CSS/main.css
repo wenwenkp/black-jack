@@ -22,7 +22,7 @@ button {
 }
 button:hover {
     box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24),0 17px 50px 0 rgba(0,0,0,0.19);
-  }
+}
 .show-back {
     width: 105px;
 }
@@ -89,7 +89,10 @@ main {
     border-radius: 50%;
 }
 #bet-buttons > input:hover {
-    box-shadow: 0px 50px 50px rgb(229, 245, 3);
+    box-shadow: 0px 0px 50px rgb(227, 236, 102);
+    transition: width 2s ,height 2s, transform 0.5s;
+    transition-timing-function: ease;
+    transform: rotate(360deg);
 }
 /* play buttons */
 #play-buttons {
