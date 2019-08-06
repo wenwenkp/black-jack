@@ -9,7 +9,6 @@ var suits = ['s', 'c', 'd', 'h'];
 var ranks = ['A','02', '03', '04', '05', '06', '07', '08', '09', '10', 'J', 'Q', 'K'];
 var types = ['spades', 'clubs', 'diamonds', 'hearts'];
 
-const startPage = document.getElementById('start-page');
 const mainPage = document.querySelector('main');
 const betBtn = document.getElementById('bet-buttons');
 const playBtn = document.getElementById('play-buttons');
@@ -111,55 +110,12 @@ function newRound() {
     player.cardsDisplayed = 0;
     dealer.cardsDisplayed = 0;
     player.turn = true;
-    dealer.turn = false;
     bust = false;
     amount = 0; 
-}
-//render
-function render() {
-    msgZone.betNum.textContent = amount;
-    msgZone.bankNum.textContent = player.bank;
-    msgZone.playerNum.textContent = calculateTotal(player.cards);
-    msgZone.remainingCards.textContent = cards.length;
-    displayPlayerCards();
-    displayDealerCards();
-    if(player.turn === true) {
-        msgZone.dealerNum.textContent = 0;
-    }else{
-        msgZone.dealerNum.textContent = parseInt(calculateTotal(dealer.cards));
-        document.querySelector(`#dealer-cell div:first-child`).classList.remove(`red`);
-        document.querySelector('#dealer-cell div:first-child').setAttribute('background-image', `images/${types[0]}/${types[0]}-${suits[0]}${ranks[dealer.cards[0]]}.svg`);
-        document.querySelector(`#dealer-cell div:first-child`).classList.add(`${suits[0]}${ranks[dealer.cards[0]-1]}`);
-    }
-    switch(page) {
-        case `bet`:
-            hideEl(startPage);
-            showEl(mainPage);
-            showEl(betBtn);
-            hideEl(playBtn);
-            hideEl(lastPage);
-            disableChips();
-            break;
-        case `play`:
-            showEl(mainPage);
-            hideEl(betBtn);
-            showEl(playBtn);
-            hideEl(lastPage);
-            disableDouble();
-            break;
-        case `last`:
-            showEl(mainPage);
-            hideEl(betBtn);
-            hideEl(playBtn);
-            showEl(lastPage);
-            disableNextRound();
-            break;
-    }
 }
 //dealer turn
 function dealerTurn() {
     player.turn = false;
-    dealer.turn = true;
     if(bust === false){
         while(calculateTotal(dealer.cards) < 15) {
             assignCard(dealer.represent);
@@ -172,7 +128,6 @@ function dealerTurn() {
 function compareBoth() {
     page = `last`;
     player.turn = false;
-    dealer.turn = false;
     let playerSum = calculateTotal(player.cards);
     let dealerSum = calculateTotal(dealer.cards);
     if(playerSum > dealerSum) {
@@ -207,70 +162,15 @@ function assignCard(receiver) {
     array[array.length] = temp.pop();
     checkBust(array);
 }
-function displayPlayerCards() {
-    let arrayP = player.cards;
-
-    while(player.cardsDisplayed < arrayP.length){
-        let i = Math.floor(Math.random() * 4);
-        let cardNum= arrayP[player.cardsDisplayed];
-        if(cardNum === 10){
-            cardNum = Math.floor(Math.random() * 4) + 10;
-        }
-        let imgUrl = `images/${types[i]}/${types[i]}-${suits[i]}${ranks[cardNum-1]}.svg`;
-        let newImg = document.createElement('div');
-        document.querySelector(`#player-cell`).appendChild(newImg);
-        document.querySelector(`#player-cell div:last-child`).setAttribute(`background-image`, imgUrl);
-        document.querySelector(`#player-cell div:last-child`).classList.add(`card`);
-        document.querySelector(`#player-cell div:last-child`).classList.add(`${suits[i]}${ranks[cardNum-1]}`);
-        player.cardsDisplayed++;
-    }
-}
-function displayDealerCards() {
-    let arrayD = dealer.cards;
-
-    while(dealer.cardsDisplayed < arrayD.length){
-        let i = Math.floor(Math.random() * 4);
-        let cardNum= arrayD[dealer.cardsDisplayed];
-        if(cardNum === 10){
-            cardNum = Math.floor(Math.random() * 4) + 10;
-        }
-        let imgUrl = `images/${types[i]}/${types[i]}-${suits[i]}${ranks[cardNum-1]}.svg`;
-        let newImg = document.createElement('div');
-        document.querySelector(`#dealer-cell`).appendChild(newImg);
-        if(dealer.cardsDisplayed === 0){
-            document.querySelector('#dealer-cell div:last-child').setAttribute(`background-image`, 'images/backs/red.svg');
-            document.querySelector(`#dealer-cell div:last-child`).classList.add(`card`);
-            document.querySelector(`#dealer-cell div:last-child`).classList.add(`red`);
-        }else{
-            document.querySelector(`#dealer-cell div:last-child`).setAttribute(`background-image`, imgUrl);
-            document.querySelector(`#dealer-cell div:last-child`).classList.add(`card`);
-            document.querySelector(`#dealer-cell div:last-child`).classList.add(`${suits[i]}${ranks[cardNum-1]}`);
-        }
-        dealer.cardsDisplayed++;
-    }
-}
-//remove all cards
-function removeCards() {
-    let elementP = document.querySelector('#player-cell');
-    let elementD = document.querySelector('#dealer-cell');
-    while(elementP.firstChild){
-        elementP.removeChild(elementP.firstChild);
-    }
-    while(elementD.firstChild){
-        elementD.removeChild(elementD.firstChild);
-    }
-}
 //next round
 function nextRound() {
-    removeCards();
-    newRound();
     if((cards.length) < 50) prepareCards();
     page = `bet`;
+    newRound();
     render();
 }
 //start over
 function startOver() {
-    removeCards();
     page = `bet`;
     init();
     render();
@@ -288,6 +188,11 @@ function calculateTotal(array) {
     for(let i = 0; i < array.length; i++) {
         sum = sum + array[i];
     }
+    if(array.includes(1)){
+        if(11 >= sum){
+            sum = sum + 10;
+        }
+    }
     return sum;
 }
 //randomly switch array elements position 100 times by default
@@ -303,6 +208,101 @@ function shuffleCards() {
 //get random index number in current card array
 function getRandomIndex() {
     return Math.floor(Math.random() * (cards.length - 1));
+}
+//render
+function render() {
+    msgZone.betNum.textContent = amount;
+    msgZone.bankNum.textContent = player.bank;
+    msgZone.playerNum.textContent = calculateTotal(player.cards);
+    msgZone.remainingCards.textContent = cards.length;
+    displayDealerCards();
+    displayPlayerCards();
+    if(player.turn === true) {
+        msgZone.dealerNum.textContent = 0;
+    }else{
+        msgZone.dealerNum.textContent = parseInt(calculateTotal(dealer.cards));
+        document.querySelector(`#dealer-cell div:first-child`).classList.remove(`red`);
+        document.querySelector('#dealer-cell div:first-child').setAttribute('background-image', `images/${types[0]}/${types[0]}-${suits[0]}${ranks[dealer.cards[0]]}.svg`);
+        document.querySelector(`#dealer-cell div:first-child`).classList.add(`${suits[0]}${ranks[dealer.cards[0]-1]}`);
+    }
+    switch(page) {
+        case `bet`:
+            removeCards();
+            hideEl(document.getElementById('start-page'));
+            showEl(mainPage);
+            showEl(betBtn);
+            hideEl(playBtn);
+            hideEl(lastPage);
+            disableChips();
+            break;
+        case `play`:
+            showEl(mainPage);
+            hideEl(betBtn);
+            showEl(playBtn);
+            hideEl(lastPage);
+            disableDouble();
+            break;
+        case `last`:
+            showEl(mainPage);
+            hideEl(betBtn);
+            hideEl(playBtn);
+            showEl(lastPage);
+            disableNextRound();
+            break;
+    }
+}
+function displayPlayerCards() {
+    let array = player.cards;
+
+    while(player.cardsDisplayed < array.length){
+        let i = Math.floor(Math.random() * 4);
+        let newImg = document.createElement('div');
+        let cardNum= array[player.cardsDisplayed];
+        let imgUrl = `images/${types[i]}/${types[i]}-${suits[i]}${ranks[cardNum-1]}.svg`;
+        if(cardNum === 10){
+            cardNum = Math.floor(Math.random() * 4) + 10;
+        }
+        document.querySelector(`#player-cell`).appendChild(newImg);
+        document.querySelector(`#player-cell div:last-child`).setAttribute(`background-image`, imgUrl);
+        document.querySelector(`#player-cell div:last-child`).classList.add(`card`);
+        document.querySelector(`#player-cell div:last-child`).classList.add(`${suits[i]}${ranks[cardNum-1]}`);
+        player.cardsDisplayed++;
+    }
+}
+function displayDealerCards() {
+    let array = dealer.cards;
+
+    while(dealer.cardsDisplayed < array.length){
+        let i = Math.floor(Math.random() * 4);
+        let newImg = document.createElement('div');
+        let cardNum= array[dealer.cardsDisplayed];
+        let imgUrl = `images/${types[i]}/${types[i]}-${suits[i]}${ranks[cardNum-1]}.svg`;
+        if(cardNum === 10){
+            cardNum = Math.floor(Math.random() * 4) + 10;
+        }
+        document.querySelector(`#dealer-cell`).appendChild(newImg);
+        if(dealer.cardsDisplayed === 0){
+            document.querySelector('#dealer-cell div:last-child').setAttribute(`background-image`, 'images/backs/red.svg');
+            document.querySelector(`#dealer-cell div:last-child`).classList.add(`card`);
+            document.querySelector(`#dealer-cell div:last-child`).classList.add(`red`);
+        }else{
+            document.querySelector(`#dealer-cell div:last-child`).setAttribute(`background-image`, imgUrl);
+            document.querySelector(`#dealer-cell div:last-child`).classList.add(`card`);
+            document.querySelector(`#dealer-cell div:last-child`).classList.add(`${suits[i]}${ranks[cardNum-1]}`);
+        }
+        dealer.cardsDisplayed++;
+    }    
+}
+//remove all cards
+function removeCards() {
+    let elementP = document.querySelector('#player-cell');
+    let elementD = document.querySelector('#dealer-cell');
+    while(elementP.firstChild){
+        elementP.removeChild(elementP.firstChild);
+    }
+    while(elementD.firstChild){
+        elementD.removeChild(elementD.firstChild);
+    }
 }
 //disable chips images according to remaining bank amount
 function disableChips() {
