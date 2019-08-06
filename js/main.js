@@ -129,10 +129,10 @@ function dealerTurn() {
         }
     }
     compareBoth();
-    document.querySelector(`#dealer-cell div:first-child`).classList.remove(`red`);
-    document.querySelector('#dealer-cell div:first-child').setAttribute('background-image', `images/${types[0]}/${types[0]}-${suits[0]}${ranks[dealer.cards[0]]}.svg`);
-    document.querySelector(`#dealer-cell div:first-child`).classList.add(`${suits[0]}${ranks[dealer.cards[0]-1]}`);
-    showEl(lastPage);
+    // document.querySelector(`#dealer-cell div:first-child`).classList.remove(`red`);
+    // document.querySelector('#dealer-cell div:first-child').setAttribute('background-image', `images/${types[0]}/${types[0]}-${suits[0]}${ranks[dealer.cards[0]]}.svg`);
+    // document.querySelector(`#dealer-cell div:first-child`).classList.add(`${suits[0]}${ranks[dealer.cards[0]-1]}`);
+    // showEl(lastPage);
 }
 //compare result or bust is true
 function compareBoth() {
@@ -262,9 +262,6 @@ function getRandomIndex() {
 }
 //disable chips images according to remaining bank amount
 function disableChips() {
-    // if(player.bank <= 0){
-        // document.querySelector('#last-page button:last-child').setAttribute(`disabled`, `true`);
-    // } else 
     if(player.bank < 50) {
         document.getElementById(`two`).setAttribute(`disabled`, `true`);
         document.getElementById('three').setAttribute(`disabled`, `true`);
@@ -278,7 +275,6 @@ function disableChips() {
         document.getElementById('three').removeAttribute(`disabled`);
         document.getElementById(`four`).setAttribute(`disabled`, `true`);
     }else{
-        // document.querySelector('#last-page button:last-child').removeAttribute(`disabled`);
         document.getElementById(`two`).removeAttribute(`disabled`);
         document.getElementById('three').removeAttribute(`disabled`);
         document.getElementById(`four`).removeAttribute(`disabled`);
@@ -328,6 +324,9 @@ function switchPage() {
             break;
         case `last`:
             msgZone.dealerNum.textContent = parseInt(calculateTotal(dealer.cards));
+            document.querySelector(`#dealer-cell div:first-child`).classList.remove(`red`);
+            document.querySelector('#dealer-cell div:first-child').setAttribute('background-image', `images/${types[0]}/${types[0]}-${suits[0]}${ranks[dealer.cards[0]]}.svg`);
+            document.querySelector(`#dealer-cell div:first-child`).classList.add(`${suits[0]}${ranks[dealer.cards[0]-1]}`);
             showEl(mainPage);
             hideEl(betBtn);
             hideEl(playBtn);
