@@ -19,9 +19,12 @@ button {
     background-color: rgb(63, 146, 182);
     color: white;
     padding: 10px 30px;
+    margin-top: 15px;
 }
 button:hover {
-    box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24),0 17px 50px 0 rgba(0,0,0,0.19);
+    box-shadow: 0 12px 50px 0 rgba(31, 24, 100, 0.24),0 17px 50px 0 rgba(77, 15, 15, 0.19);
+    background-color: rgb(17, 81, 109);
+    margin-top: 2px;
 }
 .show-back {
     width: 105px;
@@ -87,12 +90,14 @@ main {
     cursor: pointer; 
     border: hidden 1px transparent;
     border-radius: 50%;
+    margin-top: 15px;
 }
 #bet-buttons > input:hover {
     box-shadow: 0px 0px 50px rgb(227, 236, 102);
-    transition: width 2s ,height 2s, transform 0.5s;
+    transition: width 1s ,height 1s, transform 0.3s;
     transition-timing-function: ease;
-    transform: rotate(360deg);
+    transform: rotate(720deg);
+    margin-top: 2px;
 }
 /* play buttons */
 #play-buttons {
