@@ -61,7 +61,8 @@ document.getElementById("start-button").addEventListener('click', function(){
 });
 //click to lay bet, update msg zone for amount and bank
 betBtn.addEventListener('click', function(evt) {
-    betAmount = chips[evt.target.id].value;
+    let chip = evt.target.id;
+    betAmount = chips[chip].value;
     bank = bank - betAmount;
     assignCard(player.represent);
     assignCard(player.represent);
@@ -145,19 +146,19 @@ function compareBoth() {
             bank = bank + 2 * parseInt(msgZone.betNum.textContent);
             result.textContent = `😍 🥳Player Win`;
         }else{
-            result.textContent = `💸💸💸🥺Dealer Win😩`;
+            result.textContent = `💸💸💸🥺Dealer Win 😩`;
 
         }
     }else if(playerSum < dealerSum) {  
         if(bust === false){
-            result.textContent = `💸💸💸🥺Dealer Win😩`;
+            result.textContent = `💸💸💸🥺Dealer Win 😩`;
         }else{
             bank = bank + 2 * parseInt(msgZone.betNum.textContent);
             result.textContent = `😍 🥳Player Win`;
         }
     }else{
         bank = bank + betAmount;
-        result.textContent = `Tie!!`;
+        result.textContent = `🤔 Tie!!`;
     }
     render();
 }
@@ -241,6 +242,7 @@ function render() {
             hideEl(document.getElementById('start-page'));
             showEl(mainPage);
             showEl(betBtn);
+            mainPage.style.backgroundImage = ``;
             hideEl(playBtn);
             hideEl(resultPage);
             disableChips();
@@ -257,6 +259,7 @@ function render() {
             hideEl(betBtn);
             hideEl(playBtn);
             showEl(resultPage);
+            mainPage.style.backgroundImage = `radial-gradient(closest-side, rgb(64, 125, 87), rgb(42, 88, 72), rgb(31, 66, 53), rgb(24, 51, 41))`;
             disableNextRound();
             break;
     }
