@@ -297,4 +297,4 @@ function showEl(element) {
 //   while(true) {
 //     now = new Date();
 //     if(now.getTime() > exitTime) return;
-//   }
+//}

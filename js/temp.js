@@ -35,28 +35,29 @@ let bust;
 let cards;
 let shuffleTimes = 100;
 let amount; // represent amount of the bet
-let step;
 
 /*------------------event listeners---------------------*/
 //click start button for next page to start game
 document.getElementById("start-button").addEventListener('click', function(){
+    hideEl(document.getElementById('start-page'));
+    prepareCards();
     init();
     render();
-    step++;
+    showEl(document.querySelector('main'));
 });
 //click to lay bet, update msg zone for amount and bank
 betBtn.addEventListener('click', function(evt) {
     let chip = evt.target.id;
     amount = chips[chip];
     player.bank = player.bank - amount;
-
+    hideEl(betBtn);
+    showEl(playBtn);
     assignCard(player.represent);
     assignCard(player.represent);
     assignCard(dealer.represent);
     assignCard(dealer.represent);
     disableDouble();    
     render();
-    step++;
 });
 //click to hit --- player turn
 document.querySelector('#play-buttons button:first-child').addEventListener('click', function() {
@@ -94,46 +95,31 @@ function prepareCards() {
 }
 // initial the game
 function init() {
-    prepareCards();
     player.cards = [];
     dealer.cards = [];
     bust = false;
     amount = 0; 
-    step = 1;
+    msgZone.dealerNum.textContent = 0;
+    msgZone.playerNum.textContent = 0;
     render();
 }
 //render
 function render() {
-    if(step === 1) {
-        hideEl(document.getElementById('start-page'));
-        msgZone.dealerNum.textContent = 0;
-        msgZone.playerNum.textContent = 0;
-        showEl(document.querySelector('main'));
-    }else if(step === 2){
-
-        hideEl(betBtn);
-        //show 2 cards for each
-        showEl(playBtn);
-    }else if(step === 3){
-        //show new card for each click
-    }
-    msgZone.remainingCards.textContent = cards.length;
-    //update dealer number
     msgZone.betNum.textContent = amount;
-    msgZone.playerNum.textContent = calculateTotal(player.cards);
     msgZone.bankNum.textContent = player.bank;
+    msgZone.playerNum.textContent = calculateTotal(player.cards);
+    msgZone.remainingCards.textContent = cards.length;
 }
 //dealer turn
 function dealerTurn() {
     hideEl(playBtn);
-    console.log(`playbtn hided`);
     if(bust === false){
         while(calculateTotal(dealer.cards) < 15) {
             assignCard(dealer.represent);
         }
     }
     compareBoth();
-    // document.querySelector(`#dealer-cell div:first-child`).classList.remove(`red`);
+    document.querySelector(`#dealer-cell div:first-child`).classList.remove(`red`);
     document.querySelector('#dealer-cell div:first-child').setAttribute('background-image', `images/${types[0]}/${types[0]}-${suits[0]}${ranks[dealer.cards[0]]}.svg`);
     document.querySelector(`#dealer-cell div:first-child`).classList.add(`${suits[0]}${ranks[dealer.cards[0]-1]}`);
     showEl(lastPage);
@@ -161,7 +147,7 @@ function compareBoth() {
         amount = 0;
         result.textContent = `Tie!!`;
     }
-    // render();
+    render();
 }
 // winner
 function playerWin() {
@@ -223,9 +209,9 @@ function removeCards() {
 }
 //next round
 function nextRound() {
-    step = 1;
     removeCards();
     hideEl(lastPage);
+    init();
     if((cards.length) < 50) prepareCards();
     render();
     showEl(betBtn);
