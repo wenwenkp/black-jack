@@ -276,6 +276,7 @@ function displayPlayerCards() {
         document.querySelector(`#player-cell div:last-child`).setAttribute(`background-image`, imgUrl);
         document.querySelector(`#player-cell div:last-child`).classList.add(`card`);
         document.querySelector(`#player-cell div:last-child`).classList.add(`${suits[i]}${ranks[cardNum-1]}`);
+        document.querySelector(`#player-cell div:last-child`).classList.add(`cardsEffect`);
         player.cardsDisplayed++;
     }
 }
@@ -299,6 +300,7 @@ function displayDealerCards() {
             document.querySelector(`#dealer-cell div:last-child`).setAttribute(`background-image`, imgUrl);
             document.querySelector(`#dealer-cell div:last-child`).classList.add(`card`);
             document.querySelector(`#dealer-cell div:last-child`).classList.add(`${suits[i]}${ranks[cardNum-1]}`);
+            document.querySelector(`#dealer-cell div:last-child`).classList.add(`cardsEffect`);
         }
         dealer.cardsDisplayed++;
     }    
