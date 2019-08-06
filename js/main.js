@@ -55,7 +55,6 @@ betBtn.addEventListener('click', function(evt) {
     assignCard(player.represent);
     assignCard(dealer.represent);
     assignCard(dealer.represent);
-    // disableDouble();  
     page = `play`;  
     render();
 });
@@ -63,12 +62,11 @@ betBtn.addEventListener('click', function(evt) {
 document.querySelector('#play-buttons button:first-child').addEventListener('click', function() {
     assignCard(player.represent);
     render();
-    // disableChips();
 });
 //click to double
 document.querySelector('#play-buttons button:nth-child(2)').addEventListener('click', function() {
-    amount = parseInt(msgZone.betNum.textContent) * 2;
-    player.bank = player.bank - parseInt(msgZone.betNum.textContent);
+    player.bank = player.bank - amount;
+    amount = amount * 2;
     page = `last`;
     render();
     dealerTurn();
@@ -103,8 +101,6 @@ function init() {
     prepareCards();
     player.bank = 1000;
     newRound();
-    // msgZone.dealerNum.textContent = 0;
-    // msgZone.playerNum.textContent = 0;
     render();
 }
 //function new round
@@ -120,7 +116,6 @@ function render() {
     msgZone.bankNum.textContent = player.bank;
     msgZone.playerNum.textContent = calculateTotal(player.cards);
     msgZone.remainingCards.textContent = cards.length;
-    // disableChips();
     switchPage();
 }
 //dealer turn
@@ -138,13 +133,12 @@ function dealerTurn() {
     document.querySelector('#dealer-cell div:first-child').setAttribute('background-image', `images/${types[0]}/${types[0]}-${suits[0]}${ranks[dealer.cards[0]]}.svg`);
     document.querySelector(`#dealer-cell div:first-child`).classList.add(`${suits[0]}${ranks[dealer.cards[0]-1]}`);
     showEl(lastPage);
-    // disableChips();
 }
 //compare result or bust is true
 function compareBoth() {
     let playerSum = calculateTotal(player.cards);
     let dealerSum = calculateTotal(dealer.cards);
-    msgZone.dealerNum.textContent = parseInt(dealerSum);
+    // msgZone.dealerNum.textContent = parseInt(dealerSum);
     if(playerSum > dealerSum) {
         if(bust === false){
             playerWin();
@@ -236,7 +230,6 @@ function startOver() {
     page = `bet`;
     init();
     render();
-    // disableChips();
 }
 //check bust
 function checkBust(array) {
@@ -269,9 +262,10 @@ function getRandomIndex() {
 }
 //disable chips images according to remaining bank amount
 function disableChips() {
-    if(player.bank <= 0){
-        document.querySelector('#last-page button:last-child').setAttribute(`disabled`, `true`);
-    } else if(player.bank < 50) {
+    // if(player.bank <= 0){
+        // document.querySelector('#last-page button:last-child').setAttribute(`disabled`, `true`);
+    // } else 
+    if(player.bank < 50) {
         document.getElementById(`two`).setAttribute(`disabled`, `true`);
         document.getElementById('three').setAttribute(`disabled`, `true`);
         document.getElementById(`four`).setAttribute(`disabled`, `true`);
@@ -284,7 +278,7 @@ function disableChips() {
         document.getElementById('three').removeAttribute(`disabled`);
         document.getElementById(`four`).setAttribute(`disabled`, `true`);
     }else{
-        document.querySelector('#last-page button:last-child').removeAttribute(`disabled`);
+        // document.querySelector('#last-page button:last-child').removeAttribute(`disabled`);
         document.getElementById(`two`).removeAttribute(`disabled`);
         document.getElementById('three').removeAttribute(`disabled`);
         document.getElementById(`four`).removeAttribute(`disabled`);
@@ -296,6 +290,13 @@ function disableDouble() {
         document.querySelector('#play-buttons button:nth-child(2)').setAttribute(`disabled`, `true`);
     }else{
         document.querySelector('#play-buttons button:nth-child(2)').removeAttribute(`disabled`);
+    }
+}//validation for next round
+function disableNextRound() {
+    if(player.bank <= 0){
+        document.querySelector('#last-page button:last-child').setAttribute(`disabled`, `true`);
+    }else{
+        document.querySelector('#last-page button:last-child').removeAttribute(`disabled`);
     }
 }
 // hide and show elements
@@ -326,10 +327,12 @@ function switchPage() {
             disableDouble();
             break;
         case `last`:
+            msgZone.dealerNum.textContent = parseInt(calculateTotal(dealer.cards));
             showEl(mainPage);
             hideEl(betBtn);
             hideEl(playBtn);
             showEl(lastPage);
+            disableNextRound();
             break;
     }
 }
