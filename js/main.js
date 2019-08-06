@@ -1,9 +1,20 @@
 /* -----------------variables----------------------*/
 const chips = {     //represent each chip
-    one : 1,
-    two : 50,
-    three : 100,
-    four : 500
+    one : {
+        value : 1,    
+    },
+    two : {
+        value : 50,
+        selector : document.getElementById(`two`),
+    },
+    three : {
+        value : 100,
+        selector : document.getElementById('three'),
+    },
+    four : {
+        value : 500,
+        selector : document.getElementById(`four`),
+    }
 };
 const suits = ['s', 'c', 'd', 'h'];
 const ranks = ['A','02', '03', '04', '05', '06', '07', '08', '09', '10', 'J', 'Q', 'K'];
@@ -12,12 +23,11 @@ const types = ['spades', 'clubs', 'diamonds', 'hearts'];
 const mainPage = document.querySelector('main');
 const betBtn = document.getElementById('bet-buttons');
 const playBtn = document.getElementById('play-buttons');
-const lastPage = document.getElementById('last-page');
+const resultPage = document.getElementById('result-page');
 const result = document.querySelector('h1');
 
 const player = {    //player
     cards : [],
-    bank : 1000,
     represent : `player`,
     cardsDisplayed : null,
     turn : false,
@@ -38,7 +48,8 @@ const msgZone = {
 let shuffleTimes = 100;
 let bust;
 let cards;
-let amount; // represent amount of the bet
+let betAmount; // represent amount of the bet
+let bank;
 let page;
 
 /*------------------event listeners---------------------*/
@@ -50,8 +61,8 @@ document.getElementById("start-button").addEventListener('click', function(){
 });
 //click to lay bet, update msg zone for amount and bank
 betBtn.addEventListener('click', function(evt) {
-    amount = chips[evt.target.id];
-    player.bank = player.bank - amount;
+    betAmount = chips[evt.target.id].value;
+    bank = bank - betAmount;
     assignCard(player.represent);
     assignCard(player.represent);
     assignCard(dealer.represent);
@@ -66,8 +77,8 @@ document.querySelector('#play-buttons button:first-child').addEventListener('cli
 });
 //click to double
 document.querySelector('#play-buttons button:nth-child(2)').addEventListener('click', function() {
-    player.bank = player.bank - amount;
-    amount = amount * 2;
+    bank = bank - betAmount;
+    betAmount = betAmount * 2;
     render();
     dealerTurn();
 });
@@ -76,9 +87,9 @@ document.querySelector('#play-buttons button:last-child').addEventListener('clic
     dealerTurn();
 });
 //click to next round
-document.querySelector('#last-page button:last-child').addEventListener('click', nextRound);
+document.querySelector('#result-page button:last-child').addEventListener('click', nextRound);
 //click to start over
-document.querySelector('#last-page button:nth-child(2)').addEventListener('click', startOver);
+document.querySelector('#result-page button:nth-child(2)').addEventListener('click', startOver);
 
 /*--------------------------functions-------------------*/
 //create game
@@ -98,7 +109,7 @@ function prepareCards() {
 // initial the game
 function init() {
     prepareCards();
-    player.bank = 1000;
+    bank = 1000;
     newRound();
     render();
 }
@@ -110,7 +121,7 @@ function newRound() {
     dealer.cardsDisplayed = 0;
     player.turn = true;
     bust = false;
-    amount = 0; 
+    betAmount = 0; 
 }
 //dealer turn
 function dealerTurn() {
@@ -131,7 +142,7 @@ function compareBoth() {
     let dealerSum = calculateTotal(dealer.cards);
     if(playerSum > dealerSum) {
         if(bust === false){
-            player.bank = player.bank + 2 * parseInt(msgZone.betNum.textContent);
+            bank = bank + 2 * parseInt(msgZone.betNum.textContent);
             result.textContent = `Player Win`;
         }else{
             result.textContent = `Dealer Win`;
@@ -141,11 +152,11 @@ function compareBoth() {
         if(bust === false){
             result.textContent = `Dealer Win`;
         }else{
-            player.bank = player.bank + 2 * parseInt(msgZone.betNum.textContent);
+            bank = bank + 2 * parseInt(msgZone.betNum.textContent);
             result.textContent = `Player Win`;
         }
     }else{
-        player.bank = player.bank + amount;
+        bank = bank + betAmount;
         result.textContent = `Tie!!`;
     }
     render();
@@ -210,8 +221,8 @@ function getRandomIndex() {
 }
 //render
 function render() {
-    msgZone.betNum.textContent = amount;
-    msgZone.bankNum.textContent = player.bank;
+    msgZone.betNum.textContent = betAmount;
+    msgZone.bankNum.textContent = bank;
     msgZone.playerNum.textContent = calculateTotal(player.cards);
     msgZone.remainingCards.textContent = cards.length;
     displayDealerCards();
@@ -231,21 +242,21 @@ function render() {
             showEl(mainPage);
             showEl(betBtn);
             hideEl(playBtn);
-            hideEl(lastPage);
+            hideEl(resultPage);
             disableChips();
             break;
         case `play`:
             showEl(mainPage);
             hideEl(betBtn);
             showEl(playBtn);
-            hideEl(lastPage);
+            hideEl(resultPage);
             disableDouble();
             break;
         case `last`:
             showEl(mainPage);
             hideEl(betBtn);
             hideEl(playBtn);
-            showEl(lastPage);
+            showEl(resultPage);
             disableNextRound();
             break;
     }
@@ -305,37 +316,49 @@ function removeCards() {
 }
 //disable chips images according to remaining bank amount
 function disableChips() {
-    if(player.bank < 50) {
-        document.getElementById(`two`).setAttribute(`disabled`, `true`);
-        document.getElementById('three').setAttribute(`disabled`, `true`);
-        document.getElementById(`four`).setAttribute(`disabled`, `true`);
-    }else if(player.bank < 100){
-        document.getElementById(`two`).removeAttribute(`disabled`);
-        document.getElementById('three').setAttribute(`disabled`, `true`);
-        document.getElementById(`four`).setAttribute(`disabled`, `true`);
-    }else if(player.bank < 500){
-        document.getElementById(`two`).removeAttribute(`disabled`);
-        document.getElementById('three').removeAttribute(`disabled`);
-        document.getElementById(`four`).setAttribute(`disabled`, `true`);
+    if(bank < 50) {
+        // document.getElementById(`two`).setAttribute(`disabled`, `true`);
+        chips.two.selector.setAttribute(`disabled`, `true`);
+        chips.three.selector.setAttribute(`disabled`, `true`);
+        chips.four.selector.setAttribute(`disabled`, `true`);
+        // document.getElementById('three').setAttribute(`disabled`, `true`);
+        // document.getElementById(`four`).setAttribute(`disabled`, `true`);
+    }else if(bank < 100){
+        chips.two.selector.removeAttribute(`disabled`);
+        chips.three.selector.setAttribute(`disabled`, `true`);
+        chips.four.selector.setAttribute(`disabled`, `true`);
+        // document.getElementById(`two`).removeAttribute(`disabled`);
+        // document.getElementById('three').setAttribute(`disabled`, `true`);
+        // document.getElementById(`four`).setAttribute(`disabled`, `true`);
+    }else if(bank < 500){
+        chips.two.selector.removeAttribute(`disabled`);
+        chips.three.selector.removeAttribute(`disabled`);
+        chips.four.selector.setAttribute(`disabled`, `true`);
+        // document.getElementById(`two`).removeAttribute(`disabled`);
+        // document.getElementById('three').removeAttribute(`disabled`);
+        // document.getElementById(`four`).setAttribute(`disabled`, `true`);
     }else{
-        document.getElementById(`two`).removeAttribute(`disabled`);
-        document.getElementById('three').removeAttribute(`disabled`);
-        document.getElementById(`four`).removeAttribute(`disabled`);
+        chips.two.selector.removeAttribute(`disabled`);
+        chips.three.selector.removeAttribute(`disabled`);
+        chips.four.selector.removeAttribute(`disabled`);
+        // document.getElementById(`two`).removeAttribute(`disabled`);
+        // document.getElementById('three').removeAttribute(`disabled`);
+        // document.getElementById(`four`).removeAttribute(`disabled`);
     }
 }
 //validation for double button
 function disableDouble() {
-    if(amount > player.bank){
+    if(betAmount > bank){
         document.querySelector('#play-buttons button:nth-child(2)').setAttribute(`disabled`, `true`);
     }else{
         document.querySelector('#play-buttons button:nth-child(2)').removeAttribute(`disabled`);
     }
 }//validation for next round
 function disableNextRound() {
-    if(player.bank <= 0){
-        document.querySelector('#last-page button:last-child').setAttribute(`disabled`, `true`);
+    if(bank <= 0){
+        document.querySelector('#result-page button:last-child').setAttribute(`disabled`, `true`);
     }else{
-        document.querySelector('#last-page button:last-child').removeAttribute(`disabled`);
+        document.querySelector('#result-page button:last-child').removeAttribute(`disabled`);
     }
 }
 // hide and show elements

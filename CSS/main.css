@@ -111,7 +111,7 @@ main {
 }
 
 /* last page */
-#last-page {
+#result-page {
     display: grid;
     grid-template-columns: auto auto;
     grid-template-rows: auto auto;
@@ -126,7 +126,7 @@ h1 {
     color: white;
     margin: 10px;
 }
-#last-page button {
+#result-page button {
     font-size: 40px;
 }
 
