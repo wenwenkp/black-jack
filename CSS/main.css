@@ -41,6 +41,7 @@ button:hover {
 #start-page {
     min-height: 100vh;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     background-image: radial-gradient(
@@ -50,6 +51,9 @@ button:hover {
         rgb(31, 66, 53),
         rgb(24, 51, 41)
     );
+}
+#start-page > img {
+    width: 250px;
 }
 #start-button {
     font-size: 50px;
