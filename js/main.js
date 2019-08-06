@@ -351,15 +351,19 @@ function disableChips() {
 function disableDouble() {
     if(betAmount > bank){
         document.querySelector('#play-buttons button:nth-child(2)').setAttribute(`disabled`, `true`);
+        document.querySelector('#play-buttons button:nth-child(2)').classList.add(`noHover`);
     }else{
         document.querySelector('#play-buttons button:nth-child(2)').removeAttribute(`disabled`);
+        document.querySelector('#play-buttons button:nth-child(2)').classList.remove(`noHover`);
     }
 }//validation for next round
 function disableNextRound() {
     if(bank <= 0){
         document.querySelector('#result-page button:last-child').setAttribute(`disabled`, `true`);
+        document.querySelector('#result-page button:last-child').classList.add(`noHover`);
     }else{
         document.querySelector('#result-page button:last-child').removeAttribute(`disabled`);
+        document.querySelector('#result-page button:last-child').classList.remove(`noHover`);
     }
 }
 // hide and show elements
