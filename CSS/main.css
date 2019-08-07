@@ -177,4 +177,13 @@ h1 {
 #remaining-cards > img {
     width : 85px;
 }
+#msg-zone > div:last-child {
+    margin-top: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+#mutedBox {
+    transform: scale(2);
+}
 

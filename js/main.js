@@ -43,6 +43,9 @@ const betBtn = document.getElementById('bet-buttons');
 const playBtn = document.getElementById('play-buttons');
 const resultPage = document.getElementById('result-page');
 const result = document.querySelector('h1');
+const betSound = document.getElementById(`bet-sound`);
+const winnerSound = document.getElementById(`winner-sound`);
+const loserSound = document.getElementById(`loser-sound`);
 
 /*----- app's state (variables) -----*/ 
 let shuffleTimes;
@@ -63,6 +66,7 @@ document.getElementById("start-button").addEventListener('click', function(){
 betBtn.addEventListener('click', function(evt) {
     let chip = evt.target.id;
     bet = chips[chip].value;
+    if(isNaN(bet)) return;
     bank = bank - bet;
     middleArea = `play`;  
     assignCard(player.currentCards);
@@ -243,6 +247,7 @@ function render() {
             disableChips();
             break;
         case `play`:
+            playSound(betSound);
             hideEl(betBtn);
             showEl(playBtn);
             disableDouble();
@@ -305,8 +310,10 @@ function updateResult() {
     mainPage.style.backgroundImage = `radial-gradient(closest-side, rgb(64, 125, 87), rgb(42, 88, 72), rgb(31, 66, 53), rgb(24, 51, 41))`;
     if(player.winner === true){
         result.textContent = `😍 🥳 Player Win`;
+        playSound(winnerSound);
     }else if(dealer.winner === true){
         result.textContent = `💸💸💸 Dealer Win 💸💸💸`;
+        playSound(loserSound);
     }else{
         result.textContent = `🤔 Tie!!`;
     }
@@ -384,4 +391,9 @@ function hideEl(element){
 }
 function showEl(element) {
     element.classList.remove('disappear-class');
+}
+//play sound effect once clicked
+function playSound(url) {
+    let sound = url;
+    sound.play();
 }
