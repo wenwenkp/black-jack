@@ -67,8 +67,10 @@ document.getElementById("start-button").addEventListener('click', function(){
 //click to bet, update msg zone.
 betBtn.addEventListener('click', function(evt) {
     let chip = evt.target.id;
+    if(chip === betBtn.id) {
+        return;
+    };
     bet = chips[chip].value;
-    if(isNaN(bet)) return;
     bank = bank - bet;
     middleArea = `play`;  
     assignCard(player.currentCards);
