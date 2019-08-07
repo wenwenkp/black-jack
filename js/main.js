@@ -273,8 +273,10 @@ function render() {
             hideEl(betBtn);
             hideEl(playBtn);
             updateResult();
-            showEl(resultPage);
-            disableNextRound();
+            setTimeout(() => {
+                showEl(resultPage);  
+                disableNextRound();
+            }, 1000);
             break;
     }
 }

@@ -87,6 +87,38 @@ main {
     height : 13.0em;
     cursor : grab;
 }
+#player-cell > div {
+    animation: playerMove 0.2s;
+}
+#dealer-cell > div {
+    animation: dealerMove 0.2s;
+}
+@keyframes playerMove {
+    0%{
+        transform: translate3d(200px, 300px, 0px);
+        animation-timing-function: ease-in;
+    }
+    50%{
+        transform: translate3d(100px, 200px, 0px);
+        animation-timing-function: ease-out;
+    }
+    100%{
+        transform: translate3d(50px, 100px, 0px);
+    }
+}
+@keyframes dealerMove {
+    0%{
+        transform: translate3d(200px, -300px, 0px);
+        animation-timing-function: ease-in;
+    }
+    50%{
+        transform: translate3d(100px, -200px, 0px);
+        animation-timing-function: ease-out;
+    }
+    100%{
+        transform: translate3d(50px, -100px, 0px);
+    }
+}
 
 /* middle cell */
 /* bet-buttons */
