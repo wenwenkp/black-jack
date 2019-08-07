@@ -187,7 +187,6 @@ function startOver() {
 //check bust, if anyone get 21 or bust, will compare results.
 function checkBust(array) {
     if(calculateTotal(array) === 21){
-        page = `last`;
         compareBoth();
     }else if(calculateTotal(array) > 21) {
         bust = true;
@@ -305,7 +304,6 @@ function displayDealerCards() {
 }
 //update result message and change background image
 function updateResult() {
-    hideEl(document.querySelector('h3'));
     mainPage.style.backgroundImage = `radial-gradient(closest-side, rgb(64, 125, 87), rgb(42, 88, 72), rgb(31, 66, 53), rgb(24, 51, 41))`;
     if(player.winner === true){
         result.textContent = `😍 🥳 Player Win`;
@@ -320,6 +318,7 @@ function updateResult() {
 }
 //remove all currentCards
 function removeResults() {
+    hideEl(document.querySelector('h3'));
     mainPage.style.backgroundImage = ``;
     let elementP = document.querySelector('#player-cell');
     let elementD = document.querySelector('#dealer-cell');
