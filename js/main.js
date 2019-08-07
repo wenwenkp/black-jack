@@ -1,5 +1,5 @@
-/* -----------------variables----------------------*/
-const chips = {     //represent each chip
+/*----- constants -----*/ 
+const chips = {     //represent each chip value
     one : {
         value : 1,    
     },
@@ -15,7 +15,25 @@ const chips = {     //represent each chip
         value : 500,
         selector : document.getElementById(`four`),
     }
-};
+}
+const player = {    
+    currentCards : [],
+    cardsDisplayed : null,
+    turn : false,
+    winner : false,
+}
+const dealer = {  
+    currentCards : [],
+    cardsDisplayed : null,
+    winner : false,
+}
+const msgZone = {
+    remainingCards : document.querySelector('#remaining-cards span'),
+    dealerNum : document.querySelector('#dealer-total span'),
+    betNum : document.querySelector('#bet-amount span'),
+    playerNum : document.querySelector('#player-total span'),
+    bankNum : document.querySelector('#bank-amount span'),
+}
 const suits = ['s', 'c', 'd', 'h'];
 const ranks = ['A','02', '03', '04', '05', '06', '07', '08', '09', '10', 'J', 'Q', 'K'];
 const types = ['spades', 'clubs', 'diamonds', 'hearts'];
@@ -26,73 +44,58 @@ const playBtn = document.getElementById('play-buttons');
 const resultPage = document.getElementById('result-page');
 const result = document.querySelector('h1');
 
-const player = {    //player
-    cards : [],
-    represent : `player`,
-    cardsDisplayed : null,
-    turn : false,
-}
-const dealer = {    //dealer
-    cards : [],
-    represent : `dealer`,
-    cardsDisplayed : null,
-}
-const msgZone = {
-    remainingCards : document.querySelector('#remaining-cards span'),
-    dealerNum : document.querySelector('#dealer-total span'),
-    betNum : document.querySelector('#bet-amount span'),
-    playerNum : document.querySelector('#player-total span'),
-    bankNum : document.querySelector('#bank-amount span'),
-}
-
-let shuffleTimes = 100;
+/*----- app's state (variables) -----*/ 
+let shuffleTimes;
 let bust;
 let cards;
-let betAmount; // represent amount of the bet
+let bet;
 let bank;
 let page;
 
-/*------------------event listeners---------------------*/
-//click start button for next page to start game
+/*----- event listeners -----*/ 
+//click start button for to initial game.
 document.getElementById("start-button").addEventListener('click', function(){
     init();
     page = `bet`;
     render();
 });
-//click to lay bet, update msg zone for amount and bank
+//click to bet, update msg zone.
 betBtn.addEventListener('click', function(evt) {
     let chip = evt.target.id;
-    betAmount = chips[chip].value;
-    bank = bank - betAmount;
-    assignCard(player.represent);
-    assignCard(player.represent);
-    assignCard(dealer.represent);
-    assignCard(dealer.represent);
+    bet = chips[chip].value;
+    bank = bank - bet;
     page = `play`;  
+    assignCard(player.currentCards);
+    assignCard(dealer.currentCards);
+    assignCard(player.currentCards);
+    assignCard(dealer.currentCards);
+    checkBust(player.currentCards);
+    checkBust(dealer.currentCards);
     render();
 });
-//click to hit --- player turn
+//click to hit --- player turn.
 document.querySelector('#play-buttons button:first-child').addEventListener('click', function() {
-    assignCard(player.represent);
+    assignCard(player.currentCards);
+    checkBust(player.currentCards);
     render();
 });
-//click to double
+//click to double the bet, if player bust or stand, then forward to dealer turn.
 document.querySelector('#play-buttons button:nth-child(2)').addEventListener('click', function() {
-    bank = bank - betAmount;
-    betAmount = betAmount * 2;
+    bank = bank - bet;
+    bet = bet * 2;
     render();
     dealerTurn();
 });
-//click to stand -- dealer turn
+//click to stand , then dealer turn.
 document.querySelector('#play-buttons button:last-child').addEventListener('click', function() {
     dealerTurn();
 });
 //click to next round
 document.querySelector('#result-page button:last-child').addEventListener('click', nextRound);
 //click to start over
-document.querySelector('#result-page button:nth-child(2)').addEventListener('click', startOver);
+document.querySelector('#result-page button:nth-child(3)').addEventListener('click', startOver);
 
-/*--------------------------functions-------------------*/
+/*----- functions -----*/
 //create game
 function prepareCards() {
     cards = [
@@ -107,93 +110,91 @@ function prepareCards() {
     ];
     shuffleCards();
 }
-// initial the game
+// initial the game, assign default initial values.
 function init() {
-    prepareCards();
     bank = 1000;
-    newRound();
+    shuffleTimes = 100;
+    prepareCards();
+    resetSomeValues();
     render();
 }
-//function new round
-function newRound() {
-    player.cards = [];
-    dealer.cards = [];
+//reset values for next round
+function resetSomeValues() {
+    player.currentCards = [];
+    dealer.currentCards = [];
     player.cardsDisplayed = 0;
     dealer.cardsDisplayed = 0;
     player.turn = true;
+    player.winner = false;
+    dealer.winner = false;
     bust = false;
-    betAmount = 0; 
+    bet = 0; 
 }
-//dealer turn
+//dealer turn, then compare result once dealer turn done or dealer bust.
 function dealerTurn() {
     player.turn = false;
     if(bust === false){
-        while(calculateTotal(dealer.cards) < 15) {
-            assignCard(dealer.represent);
+        while(calculateTotal(dealer.currentCards) < 16) {
+            assignCard(dealer.currentCards);
+            checkBust(dealer.currentCards);
             render();
         }
     }
     compareBoth();
 }
-//compare result or bust is true
+//compare result and update result message zone
 function compareBoth() {
     page = `last`;
     player.turn = false;
-    let playerSum = calculateTotal(player.cards);
-    let dealerSum = calculateTotal(dealer.cards);
-    if(playerSum > dealerSum) {
+    if(calculateTotal(player.currentCards) > calculateTotal(dealer.currentCards)) {
         if(bust === false){
-            bank = bank + 2 * parseInt(msgZone.betNum.textContent);
-            result.textContent = `😍 🥳Player Win`;
+            bank = bank + 2 * bet;
+            player.winner = true;
         }else{
-            result.textContent = `💸💸💸🥺Dealer Win 😩`;
-
+            dealer.winner = true;
         }
-    }else if(playerSum < dealerSum) {  
+    }else if(calculateTotal(player.currentCards) < calculateTotal(dealer.currentCards)) {  
         if(bust === false){
-            result.textContent = `💸💸💸🥺Dealer Win 😩`;
+            dealer.winner = true;
         }else{
-            bank = bank + 2 * parseInt(msgZone.betNum.textContent);
-            result.textContent = `😍 🥳Player Win`;
+            bank = bank + 2 * bet;
+            player.winner = true;
         }
     }else{
-        bank = bank + betAmount;
-        result.textContent = `🤔 Tie!!`;
+        bank = bank + bet;
     }
     render();
 }
-function assignCard(receiver) {
-    let array;
-    if(receiver === 'player'){
-        array = player.cards;
-    }else{
-        array = dealer.cards;
-    };
+//get cards
+function assignCard(someone) {
+    let array = someone;
     let temp = cards.splice(getRandomIndex(), 1);
     array[array.length] = temp.pop();
-    checkBust(array);
 }
 //next round
 function nextRound() {
     if((cards.length) < 50) prepareCards();
+    resetSomeValues();
     page = `bet`;
-    newRound();
     render();
 }
 //start over
 function startOver() {
-    page = `bet`;
     init();
+    page = `bet`;
     render();
 }
-//check bust
+//check bust, if anyone get 21 or bust, will compare results.
 function checkBust(array) {
-    if(calculateTotal(array) > 21) {
+    if(calculateTotal(array) === 21){
+        page = `last`;
+        compareBoth();
+    }else if(calculateTotal(array) > 21) {
         bust = true;
         compareBoth();
     }
 }
-//calculate total number
+//calculate total number, 'A' will be 11 as long as it does not bust.
 function calculateTotal(array) {
     let sum = 0;
     for(let i = 0; i < array.length; i++) {
@@ -216,57 +217,52 @@ function shuffleCards() {
         cards[idxTwo] = temp;
     }
 }
-//get random index number in current card array
+//get random index number in card array
 function getRandomIndex() {
     return Math.floor(Math.random() * (cards.length - 1));
 }
-//render
+//render to update
 function render() {
-    msgZone.betNum.textContent = betAmount;
+    msgZone.betNum.textContent = bet;
     msgZone.bankNum.textContent = bank;
-    msgZone.playerNum.textContent = calculateTotal(player.cards);
+    msgZone.playerNum.textContent = calculateTotal(player.currentCards);
     msgZone.remainingCards.textContent = cards.length;
     displayDealerCards();
     displayPlayerCards();
     if(player.turn === true) {
         msgZone.dealerNum.textContent = 0;
     }else{
-        msgZone.dealerNum.textContent = parseInt(calculateTotal(dealer.cards));
+        msgZone.dealerNum.textContent = parseInt(calculateTotal(dealer.currentCards));
         document.querySelector(`#dealer-cell div:first-child`).classList.remove(`red`);
-        document.querySelector('#dealer-cell div:first-child').setAttribute('background-image', `images/${types[0]}/${types[0]}-${suits[0]}${ranks[dealer.cards[0]]}.svg`);
-        document.querySelector(`#dealer-cell div:first-child`).classList.add(`${suits[0]}${ranks[dealer.cards[0]-1]}`);
+        document.querySelector('#dealer-cell div:first-child').setAttribute('background-image', `images/${types[0]}/${types[0]}-${suits[0]}${ranks[dealer.currentCards[0]]}.svg`);
+        document.querySelector(`#dealer-cell div:first-child`).classList.add(`${suits[0]}${ranks[dealer.currentCards[0]-1]}`);
     }
     switch(page) {
         case `bet`:
-            removeCards();
+            removeResults();
             hideEl(document.getElementById('start-page'));
             showEl(mainPage);
             showEl(betBtn);
-            mainPage.style.backgroundImage = ``;
             hideEl(playBtn);
             hideEl(resultPage);
             disableChips();
             break;
         case `play`:
-            showEl(mainPage);
             hideEl(betBtn);
             showEl(playBtn);
-            hideEl(resultPage);
             disableDouble();
             break;
         case `last`:
-            showEl(mainPage);
             hideEl(betBtn);
             hideEl(playBtn);
+            updateResult();
             showEl(resultPage);
-            mainPage.style.backgroundImage = `radial-gradient(closest-side, rgb(64, 125, 87), rgb(42, 88, 72), rgb(31, 66, 53), rgb(24, 51, 41))`;
             disableNextRound();
             break;
     }
 }
 function displayPlayerCards() {
-    let array = player.cards;
-
+    let array = player.currentCards;
     while(player.cardsDisplayed < array.length){
         let i = Math.floor(Math.random() * 4);
         let newImg = document.createElement('div');
@@ -284,8 +280,7 @@ function displayPlayerCards() {
     }
 }
 function displayDealerCards() {
-    let array = dealer.cards;
-
+    let array = dealer.currentCards;
     while(dealer.cardsDisplayed < array.length){
         let i = Math.floor(Math.random() * 4);
         let newImg = document.createElement('div');
@@ -308,8 +303,24 @@ function displayDealerCards() {
         dealer.cardsDisplayed++;
     }    
 }
-//remove all cards
-function removeCards() {
+//update result message and change background image
+function updateResult() {
+    hideEl(document.querySelector('h3'));
+    mainPage.style.backgroundImage = `radial-gradient(closest-side, rgb(64, 125, 87), rgb(42, 88, 72), rgb(31, 66, 53), rgb(24, 51, 41))`;
+    if(player.winner === true){
+        result.textContent = `😍 🥳 Player Win`;
+    }else if(dealer.winner === true){
+        result.textContent = `💸💸💸 Dealer Win 💸💸💸`;
+    }else{
+        result.textContent = `🤔 Tie!!`;
+    }
+    if(calculateTotal(player.currentCards) === 21 || calculateTotal(dealer.currentCards) === 21){
+        showEl(document.querySelector('h3'));
+    }                          
+}
+//remove all currentCards
+function removeResults() {
+    mainPage.style.backgroundImage = ``;
     let elementP = document.querySelector('#player-cell');
     let elementD = document.querySelector('#dealer-cell');
     while(elementP.firstChild){
@@ -328,7 +339,6 @@ function disableChips() {
         chips.two.selector.classList.add(`noHover`);
         chips.three.selector.classList.add(`noHover`);
         chips.four.selector.classList.add(`noHover`);
-
     }else if(bank < 100){
         chips.two.selector.removeAttribute(`disabled`);
         chips.three.selector.setAttribute(`disabled`, `true`);
@@ -352,16 +362,16 @@ function disableChips() {
         chips.four.selector.classList.remove(`noHover`);
     }
 }
-//validation for double button
+//validation for double button, disable if not enough bank amount
 function disableDouble() {
-    if(betAmount > bank){
+    if(bet > bank){
         document.querySelector('#play-buttons button:nth-child(2)').setAttribute(`disabled`, `true`);
         document.querySelector('#play-buttons button:nth-child(2)').classList.add(`noHover`);
     }else{
         document.querySelector('#play-buttons button:nth-child(2)').removeAttribute(`disabled`);
         document.querySelector('#play-buttons button:nth-child(2)').classList.remove(`noHover`);
     }
-}//validation for next round
+}//validation for next round, disable if no bank amount left for next round
 function disableNextRound() {
     if(bank <= 0){
         document.querySelector('#result-page button:last-child').setAttribute(`disabled`, `true`);

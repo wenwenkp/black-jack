@@ -1,4 +1,3 @@
-/* general styles */
 * {
     box-sizing: border-box;
 }
@@ -37,20 +36,14 @@ button:hover {
     opacity: 0.3;
 }
 
-/* start page -------------------------------*/
+/* start page */
 #start-page {
     min-height: 100vh;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    background-image: radial-gradient(
-         closest-side, 
-        rgb(64, 125, 87),
-        rgb(42, 88, 72),
-        rgb(31, 66, 53),
-        rgb(24, 51, 41)
-    );
+    background-image: radial-gradient(closest-side,rgb(64, 125, 87),rgb(42, 88, 72),rgb(31, 66, 53),rgb(24, 51, 41));
 }
 #start-page > img {
     width: 250px;
@@ -61,7 +54,7 @@ button:hover {
     font-family: 'Righteous', cursive;
 }
 
-/* main ---------------------------------------*/
+/* main */
 main {
     min-height: 100vh;
     background-image: linear-gradient(25deg, #083237, #195440, #237947, #2ba04d);
@@ -69,7 +62,7 @@ main {
     grid-template-columns: 70% 30%;
     grid-template-rows: auto;
 }
-/* ---------------play zone------------------- */
+/* play zone */
 #play-zone {
     display: grid;
     grid-template-columns: auto;
@@ -77,24 +70,24 @@ main {
     justify-content: center;
     align-items: center;
 }
-/* --------------------------------player cell */
+/* player-cell dealer-cell */
 #player-cell, #dealer-cell {
     display: grid;
-    grid-template-columns: auto auto auto auto auto auto auto auto auto auto;
+    grid-template-columns: auto auto auto auto auto auto auto auto auto;
     grid-template-rows: auto;
     justify-content: center;
     align-items: center;    
 }
-/* Cards effect */
 .cardsEffect:hover {
     transition: width 0.2s ,height 0.2s;
     transition-timing-function: linear;
     margin-top: 2px;
     width: 10.0em;
     height: 13.0em;
+    cursor: grab;
 }
 
-/* --------------------------------middle cell */
+/* middle cell */
 /* bet-buttons */
 #bet-buttons {
     display: grid;
@@ -127,15 +120,23 @@ main {
     font-size: 50px;
     font-family: 'Mali', cursive;
 }
-
-/* last page */
+/* result page */
 #result-page {
     display: grid;
     grid-template-columns: auto auto;
-    grid-template-rows: auto auto;
+    grid-template-rows: auto auto auto;
     justify-content: center;
     align-items: center;
-    grid-gap: 50px;
+    grid-row-gap: 10px;
+    grid-column-gap: 50px;
+}
+h3 {
+    grid-column: span 2;
+    text-align: center;
+    color: white;
+    font-family: 'Mali', cursive;
+    margin: 5px;
+    font-size: 40px;
 }
 h1 {
     grid-column: span 2;
@@ -145,12 +146,11 @@ h1 {
     margin: 10px;
     font-family: 'Mali', cursive;
 }
-
 #result-page button {
     font-size: 40px;
 }
 
-/* ---------------msg zone-------------------- */
+/* msg zone */
 #msg-zone {
     display: flex;
     flex-direction: column;
@@ -174,8 +174,7 @@ h1 {
 #dealer-total > span, #player-total > span {
     border: solid 5px grey;
 }
-
 #remaining-cards > img {
-    width: 80px;
+    width: 85px;
 }
 
