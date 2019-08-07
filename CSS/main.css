@@ -54,6 +54,7 @@ button:hover {
     font-family : 'Righteous', cursive;
 }
 
+
 /* main */
 main {
     min-height : 100vh;
@@ -149,6 +150,7 @@ h1 {
 #result-page button {
     font-size : 40px;
 }
+
 
 /* msg zone */
 #msg-zone {

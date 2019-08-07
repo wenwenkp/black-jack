@@ -77,8 +77,8 @@ betBtn.addEventListener('click', function(evt) {
     assignCard(dealer.currentCards);
     assignCard(player.currentCards);
     assignCard(dealer.currentCards);
-    checkBust(player.currentCards);
-    checkBust(dealer.currentCards);
+    checkPoints(player.currentCards);
+    checkPoints(dealer.currentCards);
     render();
     if(blackJack === true){
         compareBoth();
@@ -87,7 +87,7 @@ betBtn.addEventListener('click', function(evt) {
 //click to hit --- player turn.
 document.querySelector('#play-buttons button:first-child').addEventListener('click', function() {
     assignCard(player.currentCards);
-    checkBust(player.currentCards);
+    checkPoints(player.currentCards);
     render();
     if(bust === true || blackJack === true) {
         compareBoth();
@@ -168,7 +168,7 @@ function dealerTurn() {
     player.turn = false;
     while(calculateTotal(dealer.currentCards) < 16) {
         assignCard(dealer.currentCards);
-        checkBust(dealer.currentCards);
+        checkPoints(dealer.currentCards);
         render();
     }
     compareBoth();
@@ -203,7 +203,7 @@ function assignCard(someone) {
     array[array.length] = temp.pop();
 }
 //check bust, if anyone get 21 or bust, will compare results.
-function checkBust(totalPoint) {
+function checkPoints(totalPoint) {
     if(calculateTotal(totalPoint) === 21){
         blackJack = true;
     }else if(calculateTotal(totalPoint) > 21) {
