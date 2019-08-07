@@ -260,17 +260,17 @@ function render() {
 function displayPlayerCards() {
     let array = player.currentCards;
     while(player.cardsDisplayed < array.length){
-        let idx = Math.floor(Math.random() * 4);
+        let suitIdx = Math.floor(Math.random() * 4);
         let newImg = document.createElement('div');
         let cardNum= array[player.cardsDisplayed];
-        let imgUrl = `images/${types[idx]}/${types[idx]}-${suits[idx]}${ranks[cardNum-1]}.svg`;
+        let imgUrl = `images/${types[suitIdx]}/${types[suitIdx]}-${suits[suitIdx]}${ranks[cardNum-1]}.svg`;
         if(cardNum === 10){
             cardNum = Math.floor(Math.random() * 4) + 10;
         }
         document.querySelector(`#player-cell`).appendChild(newImg);
         document.querySelector(`#player-cell div:last-child`).setAttribute(`background-image`, imgUrl);
         document.querySelector(`#player-cell div:last-child`).classList.add(`card`);
-        document.querySelector(`#player-cell div:last-child`).classList.add(`${suits[idx]}${ranks[cardNum-1]}`);
+        document.querySelector(`#player-cell div:last-child`).classList.add(`${suits[suitIdx]}${ranks[cardNum-1]}`);
         document.querySelector(`#player-cell div:last-child`).classList.add(`cardsEffect`);
         player.cardsDisplayed++;
     }
@@ -279,10 +279,10 @@ function displayPlayerCards() {
 function displayDealerCards() {
     let array = dealer.currentCards;
     while(dealer.cardsDisplayed < array.length){
-        let idx = Math.floor(Math.random() * 4);
+        let suitIdx = Math.floor(Math.random() * 4);
         let newImg = document.createElement('div');
         let cardNum= array[dealer.cardsDisplayed];
-        let imgUrl = `images/${types[idx]}/${types[idx]}-${suits[idx]}${ranks[cardNum-1]}.svg`;
+        let imgUrl = `images/${types[suitIdx]}/${types[suitIdx]}-${suits[suitIdx]}${ranks[cardNum-1]}.svg`;
         if(cardNum === 10){
             cardNum = Math.floor(Math.random() * 4) + 10;
         }
@@ -294,7 +294,7 @@ function displayDealerCards() {
         }else{
             document.querySelector(`#dealer-cell div:last-child`).setAttribute(`background-image`, imgUrl);
             document.querySelector(`#dealer-cell div:last-child`).classList.add(`card`);
-            document.querySelector(`#dealer-cell div:last-child`).classList.add(`${suits[idx]}${ranks[cardNum-1]}`);
+            document.querySelector(`#dealer-cell div:last-child`).classList.add(`${suits[suitIdx]}${ranks[cardNum-1]}`);
             document.querySelector(`#dealer-cell div:last-child`).classList.add(`cardsEffect`);
         }
         dealer.cardsDisplayed++;
