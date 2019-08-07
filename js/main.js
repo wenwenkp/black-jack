@@ -51,6 +51,7 @@ const loserSound = document.getElementById(`loser-sound`);
 /*----- app's state (variables) -----*/ 
 let shuffleTimes;
 let bust;
+let blackJack;
 let cards;
 let bet;
 let bank;
@@ -77,12 +78,18 @@ betBtn.addEventListener('click', function(evt) {
     checkBust(player.currentCards);
     checkBust(dealer.currentCards);
     render();
+    if(blackJack === true){
+        compareBoth();
+    }
 });
 //click to hit --- player turn.
 document.querySelector('#play-buttons button:first-child').addEventListener('click', function() {
     assignCard(player.currentCards);
     checkBust(player.currentCards);
     render();
+    if(bust === true || blackJack === true) {
+        compareBoth();
+    }
 });
 //click to double the bet, if player bust or stand, then forward to dealer turn.
 document.querySelector('#play-buttons button:nth-child(2)').addEventListener('click', function() {
@@ -151,17 +158,16 @@ function resetSomeValues() {
     player.winner = false;
     dealer.winner = false;
     bust = false;
+    blackJack = false;
     bet = 0; 
 }
 //dealer turn, then compare result once dealer turn done or dealer bust.
 function dealerTurn() {
     player.turn = false;
-    if(bust === false){
-        while(calculateTotal(dealer.currentCards) < 16) {
-            assignCard(dealer.currentCards);
-            checkBust(dealer.currentCards);
-            render();
-        }
+    while(calculateTotal(dealer.currentCards) < 16) {
+        assignCard(dealer.currentCards);
+        checkBust(dealer.currentCards);
+        render();
     }
     compareBoth();
 }
@@ -197,10 +203,9 @@ function assignCard(someone) {
 //check bust, if anyone get 21 or bust, will compare results.
 function checkBust(totalPoint) {
     if(calculateTotal(totalPoint) === 21){
-        compareBoth();
+        blackJack = true;
     }else if(calculateTotal(totalPoint) > 21) {
         bust = true;
-        compareBoth();
     }
 }
 //calculate total number, 'A' will be 11 as long as it does not bust.
