@@ -5,15 +5,15 @@ const chips = {     //represent each chip value
     },
     two : {
         value : 50,
-        selector : document.getElementById(`two`),
+        location : document.getElementById(`two`),
     },
     three : {
         value : 100,
-        selector : document.getElementById('three'),
+        location : document.getElementById('three'),
     },
     four : {
         value : 500,
-        selector : document.getElementById(`four`),
+        location : document.getElementById(`four`),
     }
 }
 const player = {    
@@ -50,13 +50,13 @@ let bust;
 let cards;
 let bet;
 let bank;
-let page;
+let middleArea;
 
 /*----- event listeners -----*/ 
 //click start button for to initial game.
 document.getElementById("start-button").addEventListener('click', function(){
     init();
-    page = `bet`;
+    middleArea = `bet`;
     render();
 });
 //click to bet, update msg zone.
@@ -64,7 +64,7 @@ betBtn.addEventListener('click', function(evt) {
     let chip = evt.target.id;
     bet = chips[chip].value;
     bank = bank - bet;
-    page = `play`;  
+    middleArea = `play`;  
     assignCard(player.currentCards);
     assignCard(dealer.currentCards);
     assignCard(player.currentCards);
@@ -91,9 +91,18 @@ document.querySelector('#play-buttons button:last-child').addEventListener('clic
     dealerTurn();
 });
 //click to next round
-document.querySelector('#result-page button:last-child').addEventListener('click', nextRound);
+document.querySelector('#result-page button:last-child').addEventListener('click', function() {
+    if((cards.length) < 50) prepareCards();
+    resetSomeValues();
+    middleArea = `bet`;
+    render();
+});
 //click to start over
-document.querySelector('#result-page button:nth-child(3)').addEventListener('click', startOver);
+document.querySelector('#result-page button:nth-child(3)').addEventListener('click', function() {
+    init();
+    middleArea = `bet`;
+    render();
+});
 
 /*----- functions -----*/
 //create game
@@ -144,7 +153,7 @@ function dealerTurn() {
 }
 //compare result and update result message zone
 function compareBoth() {
-    page = `last`;
+    middleArea = `last`;
     player.turn = false;
     if(calculateTotal(player.currentCards) > calculateTotal(dealer.currentCards)) {
         if(bust === false){
@@ -171,35 +180,22 @@ function assignCard(someone) {
     let temp = cards.splice(getRandomIndex(), 1);
     array[array.length] = temp.pop();
 }
-//next round
-function nextRound() {
-    if((cards.length) < 50) prepareCards();
-    resetSomeValues();
-    page = `bet`;
-    render();
-}
-//start over
-function startOver() {
-    init();
-    page = `bet`;
-    render();
-}
 //check bust, if anyone get 21 or bust, will compare results.
-function checkBust(array) {
-    if(calculateTotal(array) === 21){
+function checkBust(totalPoint) {
+    if(calculateTotal(totalPoint) === 21){
         compareBoth();
-    }else if(calculateTotal(array) > 21) {
+    }else if(calculateTotal(totalPoint) > 21) {
         bust = true;
         compareBoth();
     }
 }
 //calculate total number, 'A' will be 11 as long as it does not bust.
-function calculateTotal(array) {
+function calculateTotal(cardArray) {
     let sum = 0;
-    for(let i = 0; i < array.length; i++) {
-        sum = sum + array[i];
+    for(let i = 0; i < cardArray.length; i++) {
+        sum = sum + cardArray[i];
     }
-    if(array.includes(1)){
+    if(cardArray.includes(1)){
         if(11 >= sum){
             sum = sum + 10;
         }
@@ -236,7 +232,7 @@ function render() {
         document.querySelector('#dealer-cell div:first-child').setAttribute('background-image', `images/${types[0]}/${types[0]}-${suits[0]}${ranks[dealer.currentCards[0]]}.svg`);
         document.querySelector(`#dealer-cell div:first-child`).classList.add(`${suits[0]}${ranks[dealer.currentCards[0]-1]}`);
     }
-    switch(page) {
+    switch(middleArea) {
         case `bet`:
             removeResults();
             hideEl(document.getElementById('start-page'));
@@ -263,17 +259,17 @@ function render() {
 function displayPlayerCards() {
     let array = player.currentCards;
     while(player.cardsDisplayed < array.length){
-        let i = Math.floor(Math.random() * 4);
+        let idx = Math.floor(Math.random() * 4);
         let newImg = document.createElement('div');
         let cardNum= array[player.cardsDisplayed];
-        let imgUrl = `images/${types[i]}/${types[i]}-${suits[i]}${ranks[cardNum-1]}.svg`;
+        let imgUrl = `images/${types[idx]}/${types[idx]}-${suits[idx]}${ranks[cardNum-1]}.svg`;
         if(cardNum === 10){
             cardNum = Math.floor(Math.random() * 4) + 10;
         }
         document.querySelector(`#player-cell`).appendChild(newImg);
         document.querySelector(`#player-cell div:last-child`).setAttribute(`background-image`, imgUrl);
         document.querySelector(`#player-cell div:last-child`).classList.add(`card`);
-        document.querySelector(`#player-cell div:last-child`).classList.add(`${suits[i]}${ranks[cardNum-1]}`);
+        document.querySelector(`#player-cell div:last-child`).classList.add(`${suits[idx]}${ranks[cardNum-1]}`);
         document.querySelector(`#player-cell div:last-child`).classList.add(`cardsEffect`);
         player.cardsDisplayed++;
     }
@@ -281,10 +277,10 @@ function displayPlayerCards() {
 function displayDealerCards() {
     let array = dealer.currentCards;
     while(dealer.cardsDisplayed < array.length){
-        let i = Math.floor(Math.random() * 4);
+        let idx = Math.floor(Math.random() * 4);
         let newImg = document.createElement('div');
         let cardNum= array[dealer.cardsDisplayed];
-        let imgUrl = `images/${types[i]}/${types[i]}-${suits[i]}${ranks[cardNum-1]}.svg`;
+        let imgUrl = `images/${types[idx]}/${types[idx]}-${suits[idx]}${ranks[cardNum-1]}.svg`;
         if(cardNum === 10){
             cardNum = Math.floor(Math.random() * 4) + 10;
         }
@@ -296,7 +292,7 @@ function displayDealerCards() {
         }else{
             document.querySelector(`#dealer-cell div:last-child`).setAttribute(`background-image`, imgUrl);
             document.querySelector(`#dealer-cell div:last-child`).classList.add(`card`);
-            document.querySelector(`#dealer-cell div:last-child`).classList.add(`${suits[i]}${ranks[cardNum-1]}`);
+            document.querySelector(`#dealer-cell div:last-child`).classList.add(`${suits[idx]}${ranks[cardNum-1]}`);
             document.querySelector(`#dealer-cell div:last-child`).classList.add(`cardsEffect`);
         }
         dealer.cardsDisplayed++;
@@ -320,45 +316,45 @@ function updateResult() {
 function removeResults() {
     hideEl(document.querySelector('h3'));
     mainPage.style.backgroundImage = ``;
-    let elementP = document.querySelector('#player-cell');
-    let elementD = document.querySelector('#dealer-cell');
-    while(elementP.firstChild){
-        elementP.removeChild(elementP.firstChild);
+    let playerEl = document.querySelector('#player-cell');
+    let dealerEl = document.querySelector('#dealer-cell');
+    while(playerEl.firstChild){
+        playerEl.removeChild(playerEl.firstChild);
     }
-    while(elementD.firstChild){
-        elementD.removeChild(elementD.firstChild);
+    while(dealerEl.firstChild){
+        dealerEl.removeChild(dealerEl.firstChild);
     }
 }
 //disable chips images according to remaining bank amount
 function disableChips() {
     if(bank < 50) {
-        chips.two.selector.setAttribute(`disabled`, `true`);
-        chips.three.selector.setAttribute(`disabled`, `true`);
-        chips.four.selector.setAttribute(`disabled`, `true`);
-        chips.two.selector.classList.add(`noHover`);
-        chips.three.selector.classList.add(`noHover`);
-        chips.four.selector.classList.add(`noHover`);
+        chips.two.location.setAttribute(`disabled`, `true`);
+        chips.three.location.setAttribute(`disabled`, `true`);
+        chips.four.location.setAttribute(`disabled`, `true`);
+        chips.two.location.classList.add(`noHover`);
+        chips.three.location.classList.add(`noHover`);
+        chips.four.location.classList.add(`noHover`);
     }else if(bank < 100){
-        chips.two.selector.removeAttribute(`disabled`);
-        chips.three.selector.setAttribute(`disabled`, `true`);
-        chips.four.selector.setAttribute(`disabled`, `true`);
-        chips.two.selector.classList.remove(`noHover`);
-        chips.three.selector.classList.add(`noHover`);
-        chips.four.selector.classList.add(`noHover`);
+        chips.two.location.removeAttribute(`disabled`);
+        chips.three.location.setAttribute(`disabled`, `true`);
+        chips.four.location.setAttribute(`disabled`, `true`);
+        chips.two.location.classList.remove(`noHover`);
+        chips.three.location.classList.add(`noHover`);
+        chips.four.location.classList.add(`noHover`);
     }else if(bank < 500){
-        chips.two.selector.removeAttribute(`disabled`);
-        chips.three.selector.removeAttribute(`disabled`);
-        chips.four.selector.setAttribute(`disabled`, `true`);
-        chips.two.selector.classList.remove(`noHover`);
-        chips.three.selector.classList.remove(`noHover`);
-        chips.four.selector.classList.add(`noHover`);
+        chips.two.location.removeAttribute(`disabled`);
+        chips.three.location.removeAttribute(`disabled`);
+        chips.four.location.setAttribute(`disabled`, `true`);
+        chips.two.location.classList.remove(`noHover`);
+        chips.three.location.classList.remove(`noHover`);
+        chips.four.location.classList.add(`noHover`);
     }else{
-        chips.two.selector.removeAttribute(`disabled`);
-        chips.three.selector.removeAttribute(`disabled`);
-        chips.four.selector.removeAttribute(`disabled`);
-        chips.two.selector.classList.remove(`noHover`);
-        chips.three.selector.classList.remove(`noHover`);
-        chips.four.selector.classList.remove(`noHover`);
+        chips.two.location.removeAttribute(`disabled`);
+        chips.three.location.removeAttribute(`disabled`);
+        chips.four.location.removeAttribute(`disabled`);
+        chips.two.location.classList.remove(`noHover`);
+        chips.three.location.classList.remove(`noHover`);
+        chips.four.location.classList.remove(`noHover`);
     }
 }
 //validation for double button, disable if not enough bank amount
