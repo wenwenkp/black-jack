@@ -256,6 +256,7 @@ function render() {
             break;
     }
 }
+//display player's cards
 function displayPlayerCards() {
     let array = player.currentCards;
     while(player.cardsDisplayed < array.length){
@@ -274,6 +275,7 @@ function displayPlayerCards() {
         player.cardsDisplayed++;
     }
 }
+//display dealer's cards
 function displayDealerCards() {
     let array = dealer.currentCards;
     while(dealer.cardsDisplayed < array.length){

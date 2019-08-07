@@ -1,180 +1,180 @@
 * {
-    box-sizing: border-box;
+    box-sizing : border-box;
 }
 body {
-    margin: 0;
-    font-family: Helvetica;
-    min-height: 100vh;
-    background-image: linear-gradient(25deg, #083237, #195440, #237947, #2ba04d);
+    margin : 0;
+    font-family : Helvetica;
+    min-height : 100vh;
+    background-image : linear-gradient(25deg, #083237, #195440, #237947, #2ba04d);
 }
 button {
-    border: none;
-    text-align: center;
-    text-decoration: none;
-    cursor: pointer;
-    -webkit-transition-duration: 0.4s; /* Safari */
-    transition-duration: 0.4s;
-    border-radius: 12px;
-    background-color: rgb(63, 146, 182);
-    color: white;
-    padding: 10px 30px;
-    margin-top: 15px;
+    border : none;
+    text-align : center;
+    text-decoration : none;
+    cursor : pointer;
+    -webkit-transition-duration : 0.4s; /* Safari */
+    transition-duration : 0.4s;
+    border-radius : 12px;
+    background-color : rgb(63, 146, 182);
+    color : white;
+    padding : 10px 30px;
+    margin-top : 15px;
 }
 button:hover {
-    box-shadow: 0 12px 50px 0 rgba(31, 24, 100, 0.24),0 17px 50px 0 rgba(77, 15, 15, 0.19);
-    background-color: rgb(17, 81, 109);
-    margin-top: 2px;
+    box-shadow : 0 12px 50px 0 rgba(31, 24, 100, 0.24),0 17px 50px 0 rgba(77, 15, 15, 0.19);
+    background-color : rgb(17, 81, 109);
+    margin-top : 2px;
 }
 .show-back {
-    width: 105px;
+    width : 105px;
 }
 .disappear-class {
-    display: none !important;
+    display : none !important;
 }
 .noHover{
-    pointer-events: none !important;
-    opacity: 0.3;
+    pointer-events : none !important;
+    opacity : 0.3;
 }
 
 /* start page */
 #start-page {
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    background-image: radial-gradient(closest-side,rgb(64, 125, 87),rgb(42, 88, 72),rgb(31, 66, 53),rgb(24, 51, 41));
+    min-height : 100vh;
+    display : flex;
+    flex-direction : column;
+    justify-content : center;
+    align-items : center;
+    background-image : radial-gradient(closest-side,rgb(64, 125, 87),rgb(42, 88, 72),rgb(31, 66, 53),rgb(24, 51, 41));
 }
 #start-page > img {
-    width: 250px;
+    width : 250px;
 }
 #start-button {
-    font-size: 50px;
-    padding: 15px 32px;
-    font-family: 'Righteous', cursive;
+    font-size : 50px;
+    padding : 15px 32px;
+    font-family : 'Righteous', cursive;
 }
 
 /* main */
 main {
-    min-height: 100vh;
-    background-image: linear-gradient(25deg, #083237, #195440, #237947, #2ba04d);
-    display: grid;
-    grid-template-columns: 70% 30%;
-    grid-template-rows: auto;
+    min-height : 100vh;
+    background-image : linear-gradient(25deg, #083237, #195440, #237947, #2ba04d);
+    display : grid;
+    grid-template-columns : 70% 30%;
+    grid-template-rows : auto;
 }
 /* play zone */
 #play-zone {
-    display: grid;
-    grid-template-columns: auto;
-    grid-template-rows: 30% 40% 30%;
-    justify-content: center;
-    align-items: center;
+    display : grid;
+    grid-template-columns : auto;
+    grid-template-rows : 30% 40% 30%;
+    justify-content : center;
+    align-items : center;
 }
 /* player-cell dealer-cell */
 #player-cell, #dealer-cell {
-    display: grid;
-    grid-template-columns: auto auto auto auto auto auto auto auto auto;
-    grid-template-rows: auto;
-    justify-content: center;
-    align-items: center;    
+    display : grid;
+    grid-template-columns : auto auto auto auto auto auto auto auto auto;
+    grid-template-rows : auto;
+    justify-content : center;
+    align-items : center;    
 }
 .cardsEffect:hover {
-    transition: width 0.2s ,height 0.2s;
-    transition-timing-function: linear;
-    margin-top: 2px;
-    width: 10.0em;
-    height: 13.0em;
-    cursor: grab;
+    transition : width 0.2s ,height 0.2s;
+    transition-timing-function : linear;
+    margin-top : 2px;
+    width : 10.0em;
+    height : 13.0em;
+    cursor : grab;
 }
 
 /* middle cell */
 /* bet-buttons */
 #bet-buttons {
-    display: grid;
-    grid-template-columns: auto auto auto auto;
-    grid-template-rows: auto;
-    grid-gap: 50px;
+    display : grid;
+    grid-template-columns : auto auto auto auto;
+    grid-template-rows : auto;
+    grid-gap : 50px;
 }
 #bet-buttons > input {
-    width: 150px;
-    cursor: pointer; 
-    border: hidden 1px transparent;
-    border-radius: 50%;
-    margin-top: 15px;
+    width : 150px;
+    cursor : pointer; 
+    border : hidden 1px transparent;
+    border-radius : 50%;
+    margin-top : 15px;
 }
 #bet-buttons > input:hover {
-    box-shadow: 0px 0px 50px rgb(227, 236, 102);
-    transition: width 1s ,height 1s, transform 1s;
-    transition-timing-function: ease;
-    transform: rotate(720deg);
-    margin-top: 2px;
+    box-shadow : 0px 0px 50px rgb(227, 236, 102);
+    transition : width 1s ,height 1s, transform 1s;
+    transition-timing-function : ease;
+    transform : rotate(720deg);
+    margin-top : 2px;
 }
 /* play buttons */
 #play-buttons {
-    display: grid;
-    grid-template-columns: auto auto auto;
-    grid-template-rows: auto;
-    grid-gap: 50px;
+    display : grid;
+    grid-template-columns : auto auto auto;
+    grid-template-rows : auto;
+    grid-gap : 50px;
 }
 #play-buttons button {
-    font-size: 50px;
-    font-family: 'Mali', cursive;
+    font-size : 50px;
+    font-family : 'Mali', cursive;
 }
 /* result page */
 #result-page {
-    display: grid;
-    grid-template-columns: auto auto;
-    grid-template-rows: auto auto auto;
-    justify-content: center;
-    align-items: center;
-    grid-row-gap: 10px;
-    grid-column-gap: 50px;
+    display : grid;
+    grid-template-columns : auto auto;
+    grid-template-rows : auto auto auto;
+    justify-content : center;
+    align-items : center;
+    grid-row-gap : 10px;
+    grid-column-gap : 50px;
 }
 h3 {
-    grid-column: span 2;
-    text-align: center;
-    color: white;
-    font-family: 'Mali', cursive;
-    margin: 5px;
-    font-size: 40px;
+    grid-column : span 2;
+    text-align : center;
+    color : white;
+    font-family : 'Mali', cursive;
+    margin : 5px;
+    font-size : 40px;
 }
 h1 {
-    grid-column: span 2;
-    text-align: center;
-    font-size: 50px;
-    color: white;
-    margin: 10px;
-    font-family: 'Mali', cursive;
+    grid-column : span 2;
+    text-align : center;
+    font-size : 50px;
+    color : white;
+    margin : 10px;
+    font-family : 'Mali', cursive;
 }
 #result-page button {
-    font-size: 40px;
+    font-size : 40px;
 }
 
 /* msg zone */
 #msg-zone {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-around;
-    align-items: center;
-    padding: 50px 0px;
+    display : flex;
+    flex-direction : column;
+    justify-content : space-around;
+    align-items : center;
+    padding : 50px 0px;
 }
 #msg-zone > div * {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    font-size: 40px;
-    color: white;
-    font-family: 'Mali', cursive;
+    display : flex;
+    flex-direction : column;
+    justify-content : center;
+    align-items : center;
+    font-size : 40px;
+    color : white;
+    font-family : 'Mali', cursive;
 }
 #msg-zone > div > h2 {
-    color: white;
-    font-family: 'Bungee Inline', cursive;
+    color : white;
+    font-family : 'Bungee Inline', cursive;
 }
 #dealer-total > span, #player-total > span {
-    border: solid 5px grey;
+    border : solid 5px grey;
 }
 #remaining-cards > img {
-    width: 85px;
+    width : 85px;
 }
 
