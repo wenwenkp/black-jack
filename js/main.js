@@ -43,6 +43,7 @@ const betBtn = document.getElementById('bet-buttons');
 const playBtn = document.getElementById('play-buttons');
 const resultPage = document.getElementById('result-page');
 const result = document.querySelector('h1');
+const soundEffect = document.getElementById(`sound-effect`)
 const betSound = document.getElementById(`bet-sound`);
 const winnerSound = document.getElementById(`winner-sound`);
 const loserSound = document.getElementById(`loser-sound`);
@@ -106,6 +107,15 @@ document.querySelector('#result-page button:nth-child(3)').addEventListener('cli
     init();
     middleArea = `bet`;
     render();
+});
+//click to make sound effect able or disable
+soundEffect.addEventListener(`click`, function() {
+    console.log(soundEffect);
+    if(soundEffect.hasAttribute(`checked`)){
+        soundEffect.removeAttribute(`checked`);
+    }else{
+        soundEffect.setAttribute(`checked`, true);
+    }
 });
 
 /*----- functions -----*/
@@ -394,6 +404,8 @@ function showEl(element) {
 }
 //play sound effect once clicked
 function playSound(url) {
-    let sound = url;
-    sound.play();
+    if(soundEffect.hasAttribute(`checked`)){
+        let sound = url;
+        sound.play();
+    }
 }

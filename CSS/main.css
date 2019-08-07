@@ -156,7 +156,7 @@ h1 {
     flex-direction : column;
     justify-content : space-around;
     align-items : center;
-    padding : 50px 0px;
+    padding : 20px 0px;
 }
 #msg-zone > div * {
     display : flex;
@@ -186,4 +186,3 @@ h1 {
 #mutedBox {
     transform: scale(2);
 }
-
