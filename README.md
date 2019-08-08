@@ -20,7 +20,7 @@ Black Jack is a card game. There are many different rules for Black Jack.
 4. Result Message
 ![Black Jack](https://i.imgur.com/4PoGAqO.png)
 ![Player Win](https://i.imgur.com/efNXg4x.png)
-![Tie] (https://i.imgur.com/ExwZx5C.png)
+![Tie](https://i.imgur.com/ExwZx5C.png)
 ![Dealer Win](https://i.imgur.com/yRSdjk2.png)
 
 ## Technologies Used:
@@ -29,7 +29,7 @@ Black Jack is a card game. There are many different rules for Black Jack.
 3. JavaScript
 
 ## Link of The Game
-
+Click to play: [https://wenwenkp/github.io/black-jack/](https://wenwenkp/github.io/black-jack/)
 
 ## Instructions
 - Please enjoy the game but don't get addicted.
