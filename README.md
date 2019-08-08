@@ -1,17 +1,24 @@
 # Black-Jack
+Black Jack is a card game. There are many different rules for Black Jack. 
+1. The rules we have in this game is the one who has a higher score while not exceeding 21 will be a winner. 
+2. There is only one player in this game to play with a dealer, and once the player or dealer has 21 points we call that as Black Jack and there is a winner.
+3. The points are the sum of all the numbers on the cards. 'J', 'Q' and 'K' will be treating as number 10. 'A' will be treat as number 11, and it will be switched to number 1 once the total points are more than 21.
+4. Once the points are over 21 we call that a Bust, whoever has a bust will lose.
+5. Player can keep hitting for cards as long as the points are not over 21. Player can double the bet, then the player turn will be ended.
+6. Player will have an initial fund as 1000. Player can play next round as long as the fund is not 0.
 
 ## ScreenShots of The Game
 1. Start Page
-![](https://i.imgur.com/0nxWzrR.png)
+![Start Page](https://i.imgur.com/0nxWzrR.png)
 
 2. Bet Buttons
-![](https://i.imgur.com/4jUleEj.png)
+![Bet Buttons](https://i.imgur.com/4jUleEj.png)
 
 3. Play Buttons
-![](https://i.imgur.com/51kuK4K.png)
+![Play Buttons](https://i.imgur.com/51kuK4K.png)
 
 4. Result Message
-![](https://i.imgur.com/G6mQXCL.png)
+![Result Page](https://i.imgur.com/G6mQXCL.png)
 
 ## Technologies Used:
 1. HTML
@@ -22,7 +29,7 @@
 
 
 ## Instructions
-
+- Please enjoy the game but don't get addicted.
 
 ## Planned Future Enhancements
 1. Improve AI

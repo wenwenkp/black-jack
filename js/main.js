@@ -1,5 +1,5 @@
 /*----- constants -----*/ 
-const chips = {     //represent each chip value
+const chips = {     //represent each chip
     one : {
         value : 1,    
     },
@@ -50,11 +50,12 @@ let bank;
 let middleArea;
 
 /*----- event listeners -----*/ 
-//click start button for to initial game.
+//click start button to initial game.
 document.getElementById("start-button").addEventListener('click', function(){
     init();
+    render();
 });
-//click to bet, update msg zone.
+//click to bet and assign initial cards, if black jack then go to result page.
 betBtn.addEventListener('click', function(evt) {
     let chip = evt.target.id;
     if(chip === betBtn.id) {
@@ -74,7 +75,7 @@ betBtn.addEventListener('click', function(evt) {
         compareBoth();
     }
 });
-//click to hit --- player turn.
+//click to hit for cards, if black jack or bust then go to result page --- player turn.
 document.querySelector('#play-buttons button:first-child').addEventListener('click', function() {
     assignCard(player.currentCards);
     checkPoints(player.currentCards);
@@ -83,7 +84,7 @@ document.querySelector('#play-buttons button:first-child').addEventListener('cli
         compareBoth();
     }
 });
-//click to double the bet, if player bust or stand, then forward to dealer turn.
+//click to double the bet, then go to dealer turn.
 document.querySelector('#play-buttons button:nth-child(2)').addEventListener('click', function() {
     bank = bank - bet;
     bet = bet * 2;
@@ -94,20 +95,22 @@ document.querySelector('#play-buttons button:nth-child(2)').addEventListener('cl
 document.querySelector('#play-buttons button:last-child').addEventListener('click', function() {
     dealerTurn();
 });
-//click to next round
+//click to resset values and go to next round
 document.querySelector('#result-page button:last-child').addEventListener('click', function() {
-    if((cards.length) < 50) prepareCards();
+    if((cards.length) < 50) {
+        prepareCards();
+    };
     resetSomeValues();
     middleArea = `bet`;
     render();
 });
-//click to start over
+//click to reinitial game to start over
 document.querySelector('#result-page button:nth-child(3)').addEventListener('click', function() {
     init();
+    render();
 });
-//click to make sound effect able or disable
+//click to enable or disable sound effect
 soundEffect.addEventListener(`click`, function() {
-    console.log(soundEffect);
     if(soundEffect.hasAttribute(`checked`)){
         soundEffect.removeAttribute(`checked`);
     }else{
@@ -116,7 +119,7 @@ soundEffect.addEventListener(`click`, function() {
 });
 
 /*----- functions -----*/
-//create game
+//create and shuffle cards, including two decks
 function prepareCards() {
     cards = [
         1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 10, 10, //from A to K
@@ -136,9 +139,8 @@ function init() {
     bank = 1000;
     prepareCards();
     resetSomeValues();
-    render();
 }
-//reset values for next round
+//reset values for a new round
 function resetSomeValues() {
     player.currentCards = [];
     dealer.currentCards = [];
@@ -151,7 +153,7 @@ function resetSomeValues() {
     blackJack = false;
     bet = 0; 
 }
-//dealer turn, then compare result once dealer turn done or dealer bust.
+//dealer turn, dealer get cards as long as points are lower than 16, then compare results.
 function dealerTurn() {
     player.turn = false;
     while(calculateTotal(dealer.currentCards) < 16) {
@@ -161,7 +163,7 @@ function dealerTurn() {
     }
     compareBoth();
 }
-//compare result and update result message zone
+//compare result
 function compareBoth() {
     middleArea = `last`;
     player.turn = false;
@@ -190,7 +192,7 @@ function assignCard(someone) {
     let temp = cards.splice(getRandomIndex(), 1);
     array[array.length] = temp.pop();
 }
-//check bust, if anyone get 21 or bust, will compare results.
+//check points, if anyone get black jack or bust, change boolean value
 function checkPoints(totalPoint) {
     if(calculateTotal(totalPoint) === 21){
         blackJack = true;
@@ -235,14 +237,14 @@ function render() {
     displayDealerCards();
     displayPlayerCards();
     if(player.turn === true) {
-        document.querySelector('#dealer-total span').textContent = 0;
-    }else{
+        document.querySelector('#dealer-total span').textContent = 0;   //dealer points will be 0 when it is player turn
+    }else{                                                              //dealer first card will be uncovered when it is dealer turn
         document.querySelector('#dealer-total span').textContent = parseInt(calculateTotal(dealer.currentCards));
         document.querySelector(`#dealer-cell div:first-child`).classList.remove(`red`);
         document.querySelector('#dealer-cell div:first-child').setAttribute('background-image', `images/${types[0]}/${types[0]}-${suits[0]}${ranks[dealer.currentCards[0]]}.svg`);
         document.querySelector(`#dealer-cell div:first-child`).classList.add(`${suits[0]}${ranks[dealer.currentCards[0]-1]}`);
     }
-    switch(middleArea) {
+    switch(middleArea) {        //switch the middle cell between different button pages
         case `bet`:
             removeResults();
             hideEl(document.getElementById('start-page'));
@@ -269,7 +271,7 @@ function render() {
             break;
     }
 }
-//display player's cards
+//display player's cards, using random number to have different color and suits for each card
 function displayPlayerCards() {
     let arrayP = player.currentCards;
     while(player.cardsDisplayed < arrayP.length){
@@ -288,7 +290,7 @@ function displayPlayerCards() {
         player.cardsDisplayed++;
     }
 }
-//display dealer's cards
+//display dealer's cards, using random number to have different color and suits for each card, the first card for dealer will be turned over
 function displayDealerCards() {
     let arrayD = dealer.currentCards;
     while(dealer.cardsDisplayed < arrayD.length){
@@ -313,7 +315,7 @@ function displayDealerCards() {
         dealer.cardsDisplayed++;
     }    
 }
-//update result message and change background image
+//update result message and change background image css
 function updateResult() {
     mainPage.style.backgroundImage = `radial-gradient(closest-side, rgb(64, 125, 87), rgb(42, 88, 72), rgb(31, 66, 53), rgb(24, 51, 41))`;
     if(player.winner === true){
@@ -329,7 +331,7 @@ function updateResult() {
         showEl(document.querySelector('h3'));
     }                          
 }
-//remove all currentCards
+//before next round to start, remove black jack message, remove background image and cards.
 function removeResults() {
     hideEl(document.querySelector('h3'));
     mainPage.style.backgroundImage = ``;
@@ -362,7 +364,7 @@ function disableChips() {
         chips.four.location.classList.remove(`noHover`);
     }
 }
-//validation for double button, disable if not enough bank amount
+//disable double button if not enough bank amount
 function disableDouble() {
     if(bet > bank){
         document.querySelector('#play-buttons button:nth-child(2)').setAttribute(`disabled`, `true`);
@@ -371,7 +373,7 @@ function disableDouble() {
         document.querySelector('#play-buttons button:nth-child(2)').removeAttribute(`disabled`);
         document.querySelector('#play-buttons button:nth-child(2)').classList.remove(`noHover`);
     }
-}//validation for next round, disable if no bank amount left for next round
+}//disable next round button if not enough bank amount for next round
 function disableNextRound() {
     if(bank <= 0){
         document.querySelector('#result-page button:last-child').setAttribute(`disabled`, `true`);
@@ -388,7 +390,7 @@ function hideEl(element){
 function showEl(element) {
     element.classList.remove('disappear-class');
 }
-//play sound effect once clicked
+//play sound effect
 function playSound(url) {
     if(soundEffect.hasAttribute(`checked`)){
         let sound = url;
