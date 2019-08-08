@@ -29,7 +29,7 @@ Black Jack is a card game. There are many different rules for Black Jack.
 3. JavaScript
 
 ## Link of The Game
-Click to play: [https://wenwenkp/github.io/black-jack/](https://wenwenkp/github.io/black-jack/)
+Click to play: [https://wenwenkp.github.io/black-jack/](https://wenwenkp.github.io/black-jack/)
 
 ## Instructions
 - Please enjoy the game but don't get addicted.
