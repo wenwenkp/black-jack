@@ -27,13 +27,6 @@ const dealer = {
     cardsDisplayed : null,
     winner : false,
 }
-const msgZone = {
-    remainingCards : document.querySelector('#remaining-cards span'),
-    dealerNum : document.querySelector('#dealer-total span'),
-    betNum : document.querySelector('#bet-amount span'),
-    playerNum : document.querySelector('#player-total span'),
-    bankNum : document.querySelector('#bank-amount span'),
-}
 const suits = ['s', 'c', 'd', 'h'];
 const ranks = ['A','02', '03', '04', '05', '06', '07', '08', '09', '10', 'J', 'Q', 'K'];
 const types = ['spades', 'clubs', 'diamonds', 'hearts'];
@@ -49,7 +42,6 @@ const winnerSound = document.getElementById(`winner-sound`);
 const loserSound = document.getElementById(`loser-sound`);
 
 /*----- app's state (variables) -----*/ 
-let shuffleTimes;
 let bust;
 let blackJack;
 let cards;
@@ -113,9 +105,8 @@ document.querySelector('#result-page button:last-child').addEventListener('click
 });
 //click to start over
 document.querySelector('#result-page button:nth-child(3)').addEventListener('click', function() {
-    init();
     middleArea = `bet`;
-    render();
+    init();
 });
 //click to make sound effect able or disable
 soundEffect.addEventListener(`click`, function() {
@@ -145,7 +136,6 @@ function prepareCards() {
 // initial the game, assign default initial values.
 function init() {
     bank = 1000;
-    shuffleTimes = 100;
     prepareCards();
     resetSomeValues();
     render();
@@ -225,6 +215,7 @@ function calculateTotal(cardArray) {
 }
 //randomly switch array elements position 100 times by default
 function shuffleCards() {
+    let shuffleTimes = 100;
     for(; shuffleTimes > 0; shuffleTimes--){
         let idxOne = getRandomIndex();
         let idxTwo = getRandomIndex();
@@ -239,16 +230,16 @@ function getRandomIndex() {
 }
 //render to update
 function render() {
-    msgZone.betNum.textContent = bet;
-    msgZone.bankNum.textContent = bank;
-    msgZone.playerNum.textContent = calculateTotal(player.currentCards);
-    msgZone.remainingCards.textContent = cards.length;
+    document.querySelector('#bet-amount span').textContent = bet;
+    document.querySelector('#bank-amount span').textContent = bank;
+    document.querySelector('#player-total span').textContent = calculateTotal(player.currentCards);
+    document.querySelector('#remaining-cards span').textContent = cards.length;
     displayDealerCards();
     displayPlayerCards();
     if(player.turn === true) {
-        msgZone.dealerNum.textContent = 0;
+        document.querySelector('#dealer-total span').textContent = 0;
     }else{
-        msgZone.dealerNum.textContent = parseInt(calculateTotal(dealer.currentCards));
+        document.querySelector('#dealer-total span').textContent = parseInt(calculateTotal(dealer.currentCards));
         document.querySelector(`#dealer-cell div:first-child`).classList.remove(`red`);
         document.querySelector('#dealer-cell div:first-child').setAttribute('background-image', `images/${types[0]}/${types[0]}-${suits[0]}${ranks[dealer.currentCards[0]]}.svg`);
         document.querySelector(`#dealer-cell div:first-child`).classList.add(`${suits[0]}${ranks[dealer.currentCards[0]-1]}`);
@@ -257,10 +248,10 @@ function render() {
         case `bet`:
             removeResults();
             hideEl(document.getElementById('start-page'));
-            showEl(mainPage);
-            showEl(betBtn);
             hideEl(playBtn);
             hideEl(resultPage);
+            showEl(mainPage);
+            showEl(betBtn);
             disableChips();
             break;
         case `play`:
@@ -276,7 +267,7 @@ function render() {
             setTimeout(() => {
                 showEl(resultPage);  
                 disableNextRound();
-            }, 1000);
+            }, 600);
             break;
     }
 }
