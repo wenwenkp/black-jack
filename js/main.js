@@ -271,43 +271,43 @@ function render() {
 }
 //display player's cards
 function displayPlayerCards() {
-    let array = player.currentCards;
-    while(player.cardsDisplayed < array.length){
-        let suitIdx = Math.floor(Math.random() * 4);
-        let newImg = document.createElement('div');
-        let cardNum= array[player.cardsDisplayed];
-        let imgUrl = `images/${types[suitIdx]}/${types[suitIdx]}-${suits[suitIdx]}${ranks[cardNum-1]}.svg`;
-        if(cardNum === 10){
-            cardNum = Math.floor(Math.random() * 4) + 10;
+    let arrayP = player.currentCards;
+    while(player.cardsDisplayed < arrayP.length){
+        let pSuitIdx = Math.floor(Math.random() * 4);
+        let pNewImg = document.createElement('div');
+        let pCardNum= arrayP[player.cardsDisplayed];
+        let pImgUrl = `images/${types[pSuitIdx]}/${types[pSuitIdx]}-${suits[pSuitIdx]}${ranks[pCardNum-1]}.svg`;
+        if(pCardNum === 10){
+            pCardNum = Math.floor(Math.random() * 4) + 10;
         }
-        document.querySelector(`#player-cell`).appendChild(newImg);
-        document.querySelector(`#player-cell div:last-child`).setAttribute(`background-image`, imgUrl);
+        document.querySelector(`#player-cell`).appendChild(pNewImg);
+        document.querySelector(`#player-cell div:last-child`).setAttribute(`background-image`, pImgUrl);
         document.querySelector(`#player-cell div:last-child`).classList.add(`card`);
-        document.querySelector(`#player-cell div:last-child`).classList.add(`${suits[suitIdx]}${ranks[cardNum-1]}`);
+        document.querySelector(`#player-cell div:last-child`).classList.add(`${suits[pSuitIdx]}${ranks[pCardNum-1]}`);
         document.querySelector(`#player-cell div:last-child`).classList.add(`cardsEffect`);
         player.cardsDisplayed++;
     }
 }
 //display dealer's cards
 function displayDealerCards() {
-    let array = dealer.currentCards;
-    while(dealer.cardsDisplayed < array.length){
-        let suitIdx = Math.floor(Math.random() * 4);
-        let newImg = document.createElement('div');
-        let cardNum= array[dealer.cardsDisplayed];
-        let imgUrl = `images/${types[suitIdx]}/${types[suitIdx]}-${suits[suitIdx]}${ranks[cardNum-1]}.svg`;
-        if(cardNum === 10){
-            cardNum = Math.floor(Math.random() * 4) + 10;
+    let arrayD = dealer.currentCards;
+    while(dealer.cardsDisplayed < arrayD.length){
+        let dSuitIdx = Math.floor(Math.random() * 4);
+        let dNewImg = document.createElement('div');
+        let dCardNum= arrayD[dealer.cardsDisplayed];
+        let dImgUrl = `images/${types[dSuitIdx]}/${types[dSuitIdx]}-${suits[dSuitIdx]}${ranks[dCardNum-1]}.svg`;
+        if(dCardNum === 10){
+            dCardNum = Math.floor(Math.random() * 4) + 10;
         }
-        document.querySelector(`#dealer-cell`).appendChild(newImg);
+        document.querySelector(`#dealer-cell`).appendChild(dNewImg);
         if(dealer.cardsDisplayed === 0){
             document.querySelector('#dealer-cell div:last-child').setAttribute(`background-image`, 'images/backs/red.svg');
             document.querySelector(`#dealer-cell div:last-child`).classList.add(`card`);
             document.querySelector(`#dealer-cell div:last-child`).classList.add(`red`);
         }else{
-            document.querySelector(`#dealer-cell div:last-child`).setAttribute(`background-image`, imgUrl);
+            document.querySelector(`#dealer-cell div:last-child`).setAttribute(`background-image`, dImgUrl);
             document.querySelector(`#dealer-cell div:last-child`).classList.add(`card`);
-            document.querySelector(`#dealer-cell div:last-child`).classList.add(`${suits[suitIdx]}${ranks[cardNum-1]}`);
+            document.querySelector(`#dealer-cell div:last-child`).classList.add(`${suits[dSuitIdx]}${ranks[dCardNum-1]}`);
             document.querySelector(`#dealer-cell div:last-child`).classList.add(`cardsEffect`);
         }
         dealer.cardsDisplayed++;
