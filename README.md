@@ -41,4 +41,8 @@ Click to play: [https://wenwenkp.github.io/black-jack/](https://wenwenkp.github.
 4. Store data locally to enable to continue the game even close the browser.
 5. Add media query into CSS.
 
+### Audio Origin Sources:
+1. https://www.ear0.com/user/index/userid-7125
+2. https://www.ear0.com/user/index/userid-6180
+3. https://www.ear0.com/user/index/userid-3553
 
