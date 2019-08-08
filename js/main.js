@@ -53,8 +53,6 @@ let middleArea;
 //click start button for to initial game.
 document.getElementById("start-button").addEventListener('click', function(){
     init();
-    middleArea = `bet`;
-    render();
 });
 //click to bet, update msg zone.
 betBtn.addEventListener('click', function(evt) {
@@ -105,7 +103,6 @@ document.querySelector('#result-page button:last-child').addEventListener('click
 });
 //click to start over
 document.querySelector('#result-page button:nth-child(3)').addEventListener('click', function() {
-    middleArea = `bet`;
     init();
 });
 //click to make sound effect able or disable
@@ -135,6 +132,7 @@ function prepareCards() {
 }
 // initial the game, assign default initial values.
 function init() {
+    middleArea = `bet`;
     bank = 1000;
     prepareCards();
     resetSomeValues();
@@ -347,30 +345,18 @@ function removeResults() {
 //disable chips images according to remaining bank amount
 function disableChips() {
     if(bank < 50) {
-        chips.two.location.setAttribute(`disabled`, `true`);
-        chips.three.location.setAttribute(`disabled`, `true`);
-        chips.four.location.setAttribute(`disabled`, `true`);
         chips.two.location.classList.add(`noHover`);
         chips.three.location.classList.add(`noHover`);
         chips.four.location.classList.add(`noHover`);
     }else if(bank < 100){
-        chips.two.location.removeAttribute(`disabled`);
-        chips.three.location.setAttribute(`disabled`, `true`);
-        chips.four.location.setAttribute(`disabled`, `true`);
         chips.two.location.classList.remove(`noHover`);
         chips.three.location.classList.add(`noHover`);
         chips.four.location.classList.add(`noHover`);
     }else if(bank < 500){
-        chips.two.location.removeAttribute(`disabled`);
-        chips.three.location.removeAttribute(`disabled`);
-        chips.four.location.setAttribute(`disabled`, `true`);
         chips.two.location.classList.remove(`noHover`);
         chips.three.location.classList.remove(`noHover`);
         chips.four.location.classList.add(`noHover`);
     }else{
-        chips.two.location.removeAttribute(`disabled`);
-        chips.three.location.removeAttribute(`disabled`);
-        chips.four.location.removeAttribute(`disabled`);
         chips.two.location.classList.remove(`noHover`);
         chips.three.location.classList.remove(`noHover`);
         chips.four.location.classList.remove(`noHover`);
