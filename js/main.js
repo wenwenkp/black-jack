@@ -328,7 +328,9 @@ function updateResult() {
         result.textContent = `🤔 Tie!!`;
     }
     if(calculateTotal(player.currentCards) === 21 || calculateTotal(dealer.currentCards) === 21){
-        showEl(document.querySelector('h3'));
+        if(player.currentCards.length === 2 && dealer.currentCards.length === 2){
+            showEl(document.querySelector('h3'));
+        }
     }                          
 }
 //before next round to start, remove black jack message, remove background image and cards.
