@@ -53,6 +53,7 @@ let middleArea;
 //click start button to initial game.
 document.getElementById("start-button").addEventListener('click', function(){
     init();
+    middleArea = `bet`;
     render();
 });
 //click to bet and assign initial cards, if black jack then go to result page.
@@ -63,16 +64,19 @@ betBtn.addEventListener('click', function(evt) {
     };
     bet = chips[chip].value;
     bank = bank - bet;
-    middleArea = `play`;  
+    playSound(betSound);
     assignCard(player.currentCards);
     assignCard(dealer.currentCards);
     assignCard(player.currentCards);
     assignCard(dealer.currentCards);
     checkPoints(player.currentCards);
     checkPoints(dealer.currentCards);
+    middleArea = `play`;  
     render();
     if(blackJack === true){
+        middleArea = `last`;
         compareBoth();
+        render();
     }
 });
 //click to hit for cards, if black jack or bust then go to result page --- player turn.
@@ -81,7 +85,9 @@ document.querySelector('#play-buttons button:first-child').addEventListener('cli
     checkPoints(player.currentCards);
     render();
     if(bust === true || blackJack === true) {
+        middleArea = `last`;
         compareBoth();
+        render();
     }
 });
 //click to double the bet, then go to dealer turn.
@@ -90,16 +96,19 @@ document.querySelector('#play-buttons button:nth-child(2)').addEventListener('cl
     bet = bet * 2;
     render();
     dealerTurn();
+    middleArea = `last`;
+    compareBoth();
+    render();
 });
 //click to stand , then dealer turn.
 document.querySelector('#play-buttons button:last-child').addEventListener('click', function() {
     dealerTurn();
+    middleArea = `last`;
+    compareBoth();
+    render();
 });
 //click to resset values and go to next round
 document.querySelector('#result-page button:last-child').addEventListener('click', function() {
-    if((cards.length) < 50) {
-        prepareCards();
-    };
     resetSomeValues();
     middleArea = `bet`;
     render();
@@ -107,6 +116,7 @@ document.querySelector('#result-page button:last-child').addEventListener('click
 //click to reinitial game to start over
 document.querySelector('#result-page button:nth-child(3)').addEventListener('click', function() {
     init();
+    middleArea = `bet`;
     render();
 });
 //click to enable or disable sound effect
@@ -135,13 +145,15 @@ function prepareCards() {
 }
 // initial the game, assign default initial values.
 function init() {
-    middleArea = `bet`;
     bank = 1000;
     prepareCards();
     resetSomeValues();
 }
 //reset values for a new round
 function resetSomeValues() {
+    if((cards.length) < 50) {
+        prepareCards();
+    };
     player.currentCards = [];
     dealer.currentCards = [];
     player.cardsDisplayed = 0;
@@ -161,11 +173,9 @@ function dealerTurn() {
         checkPoints(dealer.currentCards);
         render();
     }
-    compareBoth();
 }
 //compare result
 function compareBoth() {
-    middleArea = `last`;
     player.turn = false;
     if(calculateTotal(player.currentCards) > calculateTotal(dealer.currentCards)) {
         if(bust === false){
@@ -184,7 +194,6 @@ function compareBoth() {
     }else{
         bank = bank + bet;
     }
-    render();
 }
 //get cards
 function assignCard(someone) {
@@ -255,7 +264,6 @@ function render() {
             disableChips();
             break;
         case `play`:
-            playSound(betSound);
             hideEl(betBtn);
             showEl(playBtn);
             disableDouble();
