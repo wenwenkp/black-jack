@@ -90,14 +90,10 @@ document.querySelector('#play-buttons button:first-child').addEventListener('cli
         render();
     }
 });
-//click to double the bet, then go to dealer turn.
+//click to double the bet.
 document.querySelector('#play-buttons button:nth-child(2)').addEventListener('click', function() {
     bank = bank - bet;
     bet = bet * 2;
-    render();
-    dealerTurn();
-    middleArea = `last`;
-    compareBoth();
     render();
 });
 //click to stand , then dealer turn.
@@ -377,19 +373,15 @@ function disableChips() {
 //disable double button if not enough bank amount
 function disableDouble() {
     if(bet > bank){
-        document.querySelector('#play-buttons button:nth-child(2)').setAttribute(`disabled`, `true`);
         document.querySelector('#play-buttons button:nth-child(2)').classList.add(`noHover`);
     }else{
-        document.querySelector('#play-buttons button:nth-child(2)').removeAttribute(`disabled`);
         document.querySelector('#play-buttons button:nth-child(2)').classList.remove(`noHover`);
     }
 }//disable next round button if not enough bank amount for next round
 function disableNextRound() {
     if(bank <= 0){
-        document.querySelector('#result-page button:last-child').setAttribute(`disabled`, `true`);
         document.querySelector('#result-page button:last-child').classList.add(`noHover`);
     }else{
-        document.querySelector('#result-page button:last-child').removeAttribute(`disabled`);
         document.querySelector('#result-page button:last-child').classList.remove(`noHover`);
     }
 }

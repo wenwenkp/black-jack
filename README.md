@@ -5,7 +5,7 @@ Black Jack is a card game. The rule we have in this game is simple, the one who 
 2. Once the player or dealer has 21 points there is a winner immediately, and if there are only two cards then this is a Black Jack, such as 'A' and '10'.
 2. The points are the sum of all the numbers on the cards. 'J', 'Q' and 'K' will be treating as number 10. 'A' will be treat as number 11, and it will be switched to number 1 once the total points are more than 21.
 3. Once the points are over 21 we call that a Bust, whoever has a bust will lose.
-4. Player can keep hitting for cards as long as the points are not over 21. Player can double the bet, then the player turn will be ended.
+4. Player can keep hitting for cards as long as the points are not over 21. Player can double the bet before clicking stand.
 5. Player will have an initial fund as 1000. Player can play next round as long as the fund is not 0.
 
 ### ScreenShots
